@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Camera;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -65,6 +66,8 @@ public class CameraUtils {
 
     private Camera2BasicFragment c2bFragment;
 
+    private static ArrayList<Image> imageList = new ArrayList<Image>();
+
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     public static final String FRAGMENT_DIALOG = "dialog";
@@ -109,12 +112,12 @@ public class CameraUtils {
     /**
      * Max preview width that is guaranteed by Camera2 API
      */
-    private static final int MAX_PREVIEW_WIDTH = 1920;
+    public static final int MAX_PREVIEW_WIDTH = 1920;
 
     /**
      * Max preview height that is guaranteed by Camera2 API
      */
-    private static final int MAX_PREVIEW_HEIGHT = 1080;
+    public static final int MAX_PREVIEW_HEIGHT = 1080;
 
     public final TextureView.SurfaceTextureListener mSurfaceTextureListener
             = new TextureView.SurfaceTextureListener() {
@@ -227,7 +230,8 @@ public class CameraUtils {
 
         @Override
         public void onImageAvailable(ImageReader reader) {
-            mBackgroundHandler.post(new CameraUtils.ImageSaver(reader.acquireNextImage(), mFile, c2bFragment));
+//            mBackgroundHandler.post(new CameraUtils.ImageSaver(reader.acquireNextImage(), mFile, c2bFragment));
+            mBackgroundHandler.post(new CameraUtils.ImageSaver(reader.acquireNextImage(), c2bFragment, activity));
         }
 
     };
@@ -346,6 +350,18 @@ public class CameraUtils {
         }
     }
 
+    private static void showToastStatic(final String text, final Activity activity) {
+//        final Activity activity = getActivity();
+        if (activity != null) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
     /**
      * Given {@code choices} of {@code Size}s supported by a camera, choose the smallest one that
      * is at least as large as the respective texture view size, and that is at most as large as the
@@ -397,21 +413,21 @@ public class CameraUtils {
 
     String currentPhotoPath;
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
+//    private File createImageFile() throws IOException {
+//        // Create an image file name
+//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//        String imageFileName = "JPEG_" + timeStamp + "_";
+//        File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+//        File image = File.createTempFile(
+//                imageFileName,  /* prefix */
+//                ".jpg",         /* suffix */
+//                storageDir      /* directory */
+//        );
+//
+//        // Save a file: path for use with ACTION_VIEW intents
+//        currentPhotoPath = image.getAbsolutePath();
+//        return image;
+//    }
 
     private void requestCameraPermission() {
         if (c2bFragment.shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
@@ -706,11 +722,11 @@ public class CameraUtils {
      * Initiate a still image capture.
      */
     public void takePicture() {
-        try {
-            mFile = createImageFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            mFile = createImageFile();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         lockFocus();
     }
@@ -768,7 +784,8 @@ public class CameraUtils {
             // Use the same AE and AF modes as the preview.
             captureBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                     CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
-            setAutoFlash(captureBuilder);
+            //setAutoFlash(captureBuilder);
+            captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
 
             // Orientation
             int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
@@ -781,15 +798,19 @@ public class CameraUtils {
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session,
                                                @NonNull CaptureRequest request,
                                                @NonNull TotalCaptureResult result) {
-                    showToast("Saved: " + mFile);
-                    Log.d(TAG, mFile.toString());
+//                    showToast("Saved: " + mFile);
+//                    Log.d(TAG, mFile.toString());
                     unlockFocus();
                 }
             };
-
+            List<CaptureRequest> captureList = new ArrayList<CaptureRequest>();
+            for (int i=0;i<30;i++) {
+                captureList.add(captureBuilder.build());
+            }
+//            Cancel any ongoing repeating capture set by either setRepeatingRequest or setRepeatingBurst(List , CameraCaptureSession.CaptureCallback, Handler). Has no effect on requests submitted through capture or captureBurst.
             mCaptureSession.stopRepeating();
             mCaptureSession.abortCaptures();
-            mCaptureSession.capture(captureBuilder.build(), CaptureCallback, null);
+            mCaptureSession.captureBurst(captureList, CaptureCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -818,7 +839,8 @@ public class CameraUtils {
             // Reset the auto-focus trigger
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
                     CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
-            setAutoFlash(mPreviewRequestBuilder);
+            //setAutoFlash(mPreviewRequestBuilder);
+            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
             mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
                     mBackgroundHandler);
             // After this, the camera will go back to the normal state of preview.
@@ -849,43 +871,62 @@ public class CameraUtils {
         /**
          * The file we save the image into.
          */
-        private File mFile;
+//        private File mFile;
+
+        private Activity activity;
 
         private Camera2BasicFragment c2bFragment;
 
-        ImageSaver(Image image, File file, Camera2BasicFragment c2bFragment) {
+        ImageSaver(Image image, Camera2BasicFragment c2bFragment, Activity activity) {
             mImage = image;
-            mFile = file;
+//            mFile = file;
             this.c2bFragment = c2bFragment;
+            this.activity = activity;
         }
 
         @Override
         public void run() {
-            ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
-            byte[] bytes = new byte[buffer.remaining()];
-            buffer.get(bytes);
-            FileOutputStream output = null;
-            try {
-                output = new FileOutputStream(mFile);
-                output.write(bytes);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                mImage.close();
-                if (null != output) {
-                    try {
-                        output.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(c2bFragment.globali < 20) {
-                    c2bFragment.onClick(c2bFragment.getView());
-                    ++c2bFragment.globali;
-                }
-                else
-                    c2bFragment.globali = 0;
-            }
+
+//            ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
+//            byte[] bytes = new byte[buffer.remaining()];
+//            buffer.get(bytes);
+//            FileOutputStream output = null;
+//            try {
+//                output = new FileOutputStream(mFile);
+//                output.write(bytes);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            } finally {
+//                mImage.close();
+//                if (null != output) {
+//                    try {
+//                        output.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                if(c2bFragment.globali < 20) {
+//                    c2bFragment.onClick(c2bFragment.getView());
+//                    ++c2bFragment.globali;
+//                }
+//                else
+//                    c2bFragment.globali = 0;
+//            }
+
+//            if(c2bFragment.globali < 19) {
+////                imageList.add(mImage);
+//                ++c2bFragment.globali;
+//                Log.d(TAG, "çekiyor");
+//                c2bFragment.onClick(c2bFragment.getView());
+//            }
+//            else {
+//                c2bFragment.globali = 0;
+//                Log.d(TAG, "ahanda yirmili bitti");
+//                //hesaplama kodları buraya gelcek 20 foto olunca
+////                imageList = new ArrayList<>();
+//            }
+            Log.d(TAG, "çekiyor");
+
         }
 
     }

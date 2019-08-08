@@ -427,6 +427,7 @@ public class Camera2BasicFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("asd", "denemeeeee");
         return inflater.inflate(R.layout.fragment_camera2_basic, container, false);
     }
 

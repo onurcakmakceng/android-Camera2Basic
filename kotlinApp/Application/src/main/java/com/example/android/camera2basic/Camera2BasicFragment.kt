@@ -578,7 +578,7 @@ class Camera2BasicFragment : Fragment(), View.OnClickListener,
     /**
      * Lock the focus as the first step for a still image capture.
      */
-    private fun lockFocus() {
+    public fun lockFocus() {
         try {
             // This is how to tell the camera to lock focus.
             previewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
