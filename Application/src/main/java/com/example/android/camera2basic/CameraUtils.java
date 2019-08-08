@@ -227,7 +227,11 @@ public class CameraUtils {
 
         @Override
         public void onImageAvailable(ImageReader reader) {
-            mBackgroundHandler.post(new CameraUtils.ImageSaver(reader.acquireNextImage(), mFile, c2bFragment));
+            try {
+                mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), createImageFile(), c2bFragment));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     };
@@ -789,7 +793,11 @@ public class CameraUtils {
 
             mCaptureSession.stopRepeating();
             mCaptureSession.abortCaptures();
-            mCaptureSession.capture(captureBuilder.build(), CaptureCallback, null);
+            List<CaptureRequest> captureList = new ArrayList<CaptureRequest>();
+            for (int i=0;i<30;i++) {
+                captureList.add(captureBuilder.build());
+            }
+            mCaptureSession.captureBurst(captureList, CaptureCallback, null);
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -879,12 +887,12 @@ public class CameraUtils {
                         e.printStackTrace();
                     }
                 }
-                if(c2bFragment.globali < 20) {
-                    c2bFragment.onClick(c2bFragment.getView());
-                    ++c2bFragment.globali;
-                }
-                else
-                    c2bFragment.globali = 0;
+//                if(c2bFragment.globali < 20) {
+//                    c2bFragment.onClick(c2bFragment.getView());
+//                    ++c2bFragment.globali;
+//                }
+//                else
+//                    c2bFragment.globali = 0;
             }
         }
 
