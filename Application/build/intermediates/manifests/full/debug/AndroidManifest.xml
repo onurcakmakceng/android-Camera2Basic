@@ -34,7 +34,7 @@
         android:debuggable="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:testOnly="true"
+        android:largeHeap="true"
         android:theme="@style/MaterialTheme" >
         <activity
             android:name="com.example.android.camera2basic.CameraActivity"

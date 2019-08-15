@@ -8,7 +8,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Camera;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -71,6 +74,9 @@ public class CameraUtils {
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     public static final String FRAGMENT_DIALOG = "dialog";
+
+    private static final int MAX_AVAILABLE = 1;
+    private static final Semaphore mutex = new Semaphore(MAX_AVAILABLE, true);
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -466,10 +472,10 @@ public class CameraUtils {
 
                 // For still image captures, we use the largest available size.
                 Size largest = Collections.max(
-                        Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
+                        Arrays.asList(map.getOutputSizes(ImageFormat.YUV_420_888)),
                         new CameraUtils.CompareSizesByArea());
                 mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(),
-                        ImageFormat.JPEG, /*maxImages*/30);
+                        ImageFormat.YUV_420_888, /*maxImages*/30);
                 mImageReader.setOnImageAvailableListener(
                         mOnImageAvailableListener, mBackgroundHandler);
 
@@ -662,7 +668,8 @@ public class CameraUtils {
                                 mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
                                 // Flash is automatically enabled when necessary.
-                                setAutoFlash(mPreviewRequestBuilder);
+                                //setAutoFlash(mPreviewRequestBuilder);
+                                mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
 
                                 // Finally, we start displaying the camera preview.
                                 mPreviewRequest = mPreviewRequestBuilder.build();
@@ -886,8 +893,7 @@ public class CameraUtils {
 
         @Override
         public void run() {
-
-//            ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
+//
 //            byte[] bytes = new byte[buffer.remaining()];
 //            buffer.get(bytes);
 //            FileOutputStream output = null;
@@ -925,8 +931,32 @@ public class CameraUtils {
 //                //hesaplama kodları buraya gelcek 20 foto olunca
 ////                imageList = new ArrayList<>();
 //            }
-            Log.d(TAG, "çekiyor");
 
+
+
+
+            try{
+                mutex.acquire();
+                if (c2bFragment.globali++ >= 29) {
+                    showToastStatic("artık endişeli değilim 10 foto çektik :P:D", activity);
+                }
+                mutex.release();
+            }catch (Exception e)
+            {
+                showToastStatic(e.getMessage(), activity);
+            }
+
+//            ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
+//            byte[] bytes = new byte[buffer.remaining()];
+//            buffer.get(bytes);
+//            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length,null);
+//            int pixel = bitmap.getPixel(23,12); //Burayı döngüye alıp hesaplamaları yaptırabilirsiniz
+//            int redValue = Color.red(pixel);
+//            int blueValue = Color.blue(pixel);
+//            int greenValue = Color.green(pixel);
+            //Log.d(TAG, "çekiyor red:" + redValue + "çekiyor green:" + greenValue + "çekiyor blue:" + blueValue);
+
+            //Burdaki kodlar bittikten sonra bu fonksiyonun adını değiştir, save fonksiyonu yerine çekilen fotoları işleme fonksiyonu olsun
         }
 
     }
