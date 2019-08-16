@@ -35,12 +35,12 @@
     <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java" line="444" />
     <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java" line="810" />
     <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java" line="466" />
-    <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java" line="778" />
-    <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java" line="866" />
+    <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java" line="760" />
+    <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java" line="848" />
     <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java" line="476" />
-    <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java" line="1019" mnemonic="7" />
-    <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java" line="889" />
-    <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java" line="870" />
+    <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java" line="1001" mnemonic="7" />
+    <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java" line="871" />
+    <bookmark url="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java" line="852" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="52d9009f-1b55-45c9-b370-16ab421ad620" name="Default Changelist" comment="">
@@ -52,6 +52,7 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$7.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$CompareSizesByArea.class" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$CompareSizesByArea.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ConfirmationDialog$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ConfirmationDialog$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ConfirmationDialog$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ConfirmationDialog$2.class" afterDir="false" />
@@ -59,6 +60,7 @@
       <change beforePath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ErrorDialog$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ErrorDialog$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ErrorDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ErrorDialog.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ImageSaver.class" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ImageSaver.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/build/intermediates/transforms/dexMerger/debug/__content__.json" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/transforms/dexMerger/debug/__content__.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/build/outputs/apk/debug/Application-debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/outputs/apk/debug/Application-debug.apk" afterDir="false" />
@@ -103,7 +105,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1">
+            <state relative-caret-position="13413">
               <caret line="859" column="64" selection-start-line="859" selection-start-column="64" selection-end-line="859" selection-end-column="64" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -125,8 +127,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
-              <caret line="1004" column="51" lean-forward="true" selection-start-line="1004" selection-start-column="51" selection-end-line="1004" selection-end-column="51" />
+            <state relative-caret-position="519">
+              <caret line="932" column="44" lean-forward="true" selection-start-line="932" selection-start-column="44" selection-end-line="932" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -173,10 +175,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>main</find>
-      <find>lockFocus</find>
-      <find>mCamera</find>
-      <find>onDraw</find>
       <find>mFlashSupported</find>
       <find>FLASH_MODE_OFF</find>
       <find>createImageFile</find>
@@ -203,6 +201,10 @@
       <find>2</find>
       <find>mImage</find>
       <find>ImageSaver</find>
+      <find>widt</find>
+      <find>mFile</find>
+      <find>currentPhotoPath</find>
+      <find>rgb</find>
     </findStrings>
     <replaceStrings>
       <replace>1</replace>
@@ -237,12 +239,7 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
-      <pane id="AndroidView" />
-      <pane id="Scope" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="D:/Honour/AppData/Local/Android/Sdk" />
@@ -376,7 +373,7 @@
       <window_info anchor="right" id="Device File Explorer" order="4" side_tool="true" weight="0.4003198" />
       <window_info anchor="right" id="Hierarchy" order="5" weight="0.32995737" />
       <window_info anchor="right" id="Preview" order="6" weight="0.32995737" />
-      <window_info active="true" anchor="right" x="0" y="0" width="434" height="856" id="Documentation" order="7" side_tool="true" visible="true" weight="0.32995737" />
+      <window_info anchor="right" x="0" y="0" width="434" height="856" id="Documentation" order="7" side_tool="true" visible="true" weight="0.32995737" />
     </layout>
     <layout-to-restore>
       <window_info id="Structure" order="0" side_tool="true" />
@@ -392,7 +389,7 @@
       <window_info anchor="bottom" id="TODO" order="1" />
       <window_info anchor="bottom" id="Terminal" order="2" weight="0.32936078" />
       <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.5010661" side_tool="true" weight="0.32900432" />
-      <window_info active="true" anchor="bottom" id="Build" order="4" sideWeight="0.49946696" visible="true" weight="0.3051948" />
+      <window_info anchor="bottom" id="Build" order="4" sideWeight="0.49946696" weight="0.3051948" />
       <window_info anchor="bottom" id="Android Profiler" order="5" show_stripe_button="false" />
       <window_info anchor="bottom" id="Logcat" order="6" weight="0.32936078" />
       <window_info anchor="bottom" id="Find" order="7" sideWeight="0.4989339" weight="0.32936078" />
@@ -405,7 +402,7 @@
       <window_info anchor="right" id="Device File Explorer" order="4" side_tool="true" weight="0.4003198" />
       <window_info anchor="right" id="Hierarchy" order="5" weight="0.32995737" />
       <window_info anchor="right" id="Preview" order="6" weight="0.32995737" />
-      <window_info anchor="right" x="0" y="0" width="434" height="856" id="Documentation" order="7" side_tool="true" visible="true" weight="0.32995737" />
+      <window_info active="true" anchor="right" x="0" y="0" width="434" height="856" id="Documentation" order="7" side_tool="true" visible="true" weight="0.32995737" />
     </layout-to-restore>
   </component>
   <component name="XDebuggerManager">
@@ -413,7 +410,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java</url>
-          <line>662</line>
+          <line>644</line>
           <properties />
           <option name="timeStamp" value="16" />
         </line-breakpoint>
@@ -491,12 +488,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Application/tests/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="394">
           <caret line="29" column="59" selection-start-line="29" selection-start-column="59" selection-end-line="29" selection-end-column="59" />
         </state>
       </provider>
+      <provider editor-type-id="android-manifest" />
     </entry>
     <entry file="file://$PROJECT_DIR$/kotlinApp/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.kt">
       <provider selected="true" editor-type-id="text-editor">
@@ -505,13 +502,43 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Application/src/main/res/layout/fragment_camera2_basic.xml">
+      <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="578">
+          <caret line="34" selection-start-line="34" selection-end-line="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Application/src/main/res/layout/activity_camera.xml">
+      <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13413">
+          <caret line="859" column="64" selection-start-line="859" selection-start-column="64" selection-end-line="859" selection-end-column="64" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Application/src/main/res/layout-land/fragment_camera2_basic.xml">
+      <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="680">
+          <caret line="40" column="24" selection-start-line="40" selection-start-column="24" selection-end-line="40" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Application/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
           <caret line="26" selection-start-line="26" selection-end-line="26" />
         </state>
       </provider>
+      <provider editor-type-id="android-manifest" />
     </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.support/support-fragment/27.0.2/659085cb974e7ec1f25451d23f11578332ea0d7e/support-fragment-27.0.2-sources.jar!/android/support/v4/app/Fragment.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -530,40 +557,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Application/src/main/res/layout/fragment_camera2_basic.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="34" selection-start-line="34" selection-end-line="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Application/src/main/res/layout-land/fragment_camera2_basic.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="40" column="24" selection-start-line="40" selection-start-column="24" selection-end-line="40" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Application/src/main/res/layout/activity_camera.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
-      <provider editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1">
-          <caret line="859" column="64" selection-start-line="859" selection-start-column="64" selection-end-line="859" selection-end-column="64" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="1004" column="51" lean-forward="true" selection-start-line="1004" selection-start-column="51" selection-end-line="1004" selection-end-column="51" />
+        <state relative-caret-position="519">
+          <caret line="932" column="44" lean-forward="true" selection-start-line="932" selection-start-column="44" selection-end-line="932" selection-end-column="44" />
         </state>
       </provider>
     </entry>
