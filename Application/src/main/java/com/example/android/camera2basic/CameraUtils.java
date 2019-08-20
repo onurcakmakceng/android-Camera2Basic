@@ -8,7 +8,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Camera;
+import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -71,6 +74,9 @@ public class CameraUtils {
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     private static final int REQUEST_CAMERA_PERMISSION = 1;
     public static final String FRAGMENT_DIALOG = "dialog";
+
+    private static final int MAX_AVAILABLE = 1;
+    private static final Semaphore mutex = new Semaphore(MAX_AVAILABLE, true);
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -411,24 +417,6 @@ public class CameraUtils {
         }
     }
 
-    String currentPhotoPath;
-
-//    private File createImageFile() throws IOException {
-//        // Create an image file name
-//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//        String imageFileName = "JPEG_" + timeStamp + "_";
-//        File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-//        File image = File.createTempFile(
-//                imageFileName,  /* prefix */
-//                ".jpg",         /* suffix */
-//                storageDir      /* directory */
-//        );
-//
-//        // Save a file: path for use with ACTION_VIEW intents
-//        currentPhotoPath = image.getAbsolutePath();
-//        return image;
-//    }
-
     private void requestCameraPermission() {
         if (c2bFragment.shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
             new CameraUtils.ConfirmationDialog().show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
@@ -466,10 +454,10 @@ public class CameraUtils {
 
                 // For still image captures, we use the largest available size.
                 Size largest = Collections.max(
-                        Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
+                        Arrays.asList(map.getOutputSizes(ImageFormat.YUV_420_888)),
                         new CameraUtils.CompareSizesByArea());
                 mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(),
-                        ImageFormat.JPEG, /*maxImages*/30);
+                        ImageFormat.YUV_420_888, /*maxImages*/30);
                 mImageReader.setOnImageAvailableListener(
                         mOnImageAvailableListener, mBackgroundHandler);
 
@@ -662,7 +650,8 @@ public class CameraUtils {
                                 mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
                                 // Flash is automatically enabled when necessary.
-                                setAutoFlash(mPreviewRequestBuilder);
+                                //setAutoFlash(mPreviewRequestBuilder);
+                                mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
 
                                 // Finally, we start displaying the camera preview.
                                 mPreviewRequest = mPreviewRequestBuilder.build();
@@ -804,7 +793,7 @@ public class CameraUtils {
                 }
             };
             List<CaptureRequest> captureList = new ArrayList<CaptureRequest>();
-            for (int i=0;i<30;i++) {
+            for (int i=0;i<1;i++) {
                 captureList.add(captureBuilder.build());
             }
 //            Cancel any ongoing repeating capture set by either setRepeatingRequest or setRepeatingBurst(List , CameraCaptureSession.CaptureCallback, Handler). Has no effect on requests submitted through capture or captureBurst.
@@ -859,6 +848,7 @@ public class CameraUtils {
         }
     }
 
+
     /**
      * Saves a JPEG {@link Image} into the specified {@link File}.
      */
@@ -883,11 +873,76 @@ public class CameraUtils {
             this.c2bFragment = c2bFragment;
             this.activity = activity;
         }
+        /**
+         * Converts YUV420 NV21 to RGB8888
+         *
+         * @param data byte array on YUV420 NV21 format.
+         * @param width pixels width
+         * @param height pixels height
+         * @return a RGB8888 pixels int array. Where each int is a pixels ARGB.
+         */
+        public static int[] convertYUV420_NV21toRGB8888(byte [] data, int width, int height) {
+            int size = width*height;
+            int offset = size;
+            int[] pixels = new int[size];
+            int u, v, y1, y2, y3, y4;
+
+            // i percorre os Y and the final pixels
+            // k percorre os pixles U e V
+            for(int i=0, k=0; i < size; i+=2, k+=2) {
+                y1 = data[i  ]&0xff;
+                y2 = data[i+1]&0xff;
+                y3 = data[width+i  ]&0xff;
+                y4 = data[width+i+1]&0xff;
+
+                u = data[offset+k  ]&0xff;
+                v = data[offset+k+1]&0xff;
+                u = u-128;
+                v = v-128;
+
+                pixels[i  ] = convertYUVtoRGB(y1, u, v);
+                pixels[i+1] = convertYUVtoRGB(y2, u, v);
+                pixels[width+i  ] = convertYUVtoRGB(y3, u, v);
+                pixels[width+i+1] = convertYUVtoRGB(y4, u, v);
+
+                if (i!=0 && (i+2)%width==0)
+                    i+=width;
+            }
+
+            return pixels;
+        }
+
+        private static int convertYUVtoRGB(int y, int u, int v) {
+            int r,g,b;
+
+            r = y + (int)(1.772f*u);
+            g = y - (int)(0.344f*u +0.714f*v);
+            b = y + (int)(1.402f*v);
+            r = r>255? 255 : r<0 ? 0 : r;
+            g = g>255? 255 : g<0 ? 0 : g;
+            b = b>255? 255 : b<0 ? 0 : b;
+            return 0xff000000 | (b<<16) | (g<<8) | r;
+        }
+
+    private static File createImageFile(Activity activity) throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        String currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
 
         @Override
         public void run() {
-
-//            ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
+//
 //            byte[] bytes = new byte[buffer.remaining()];
 //            buffer.get(bytes);
 //            FileOutputStream output = null;
@@ -925,8 +980,107 @@ public class CameraUtils {
 //                //hesaplama kodları buraya gelcek 20 foto olunca
 ////                imageList = new ArrayList<>();
 //            }
-            Log.d(TAG, "çekiyor");
 
+
+//mimage'ı imagelListe atma kodunu tekrar etkinleştirin
+
+            try{
+                mutex.acquire();
+
+                if (c2bFragment.globali++ >= 29) {
+                   showToastStatic("artık endişeli değilim 10 foto çektik :P:D", activity);
+                }
+
+                Image.Plane Y = mImage.getPlanes()[0];
+                Image.Plane U = mImage.getPlanes()[1];
+                Image.Plane V = mImage.getPlanes()[2];
+
+                int Yb = Y.getBuffer().remaining();
+                int Ub = U.getBuffer().remaining();
+                int Vb = V.getBuffer().remaining();
+
+                byte[] data = new byte[Yb + Ub + Vb];
+                //your data length should be this byte array length.
+
+                Y.getBuffer().get(data, 0, Yb);
+                U.getBuffer().get(data, Yb, Ub);
+                V.getBuffer().get(data, Yb+ Ub, Vb);
+                int mImageWidth = mImage.getWidth();
+                int mImageHeight = mImage.getHeight();
+
+                int[] pixels = convertYUV420_NV21toRGB8888(data, mImageWidth, mImageHeight);
+                Bitmap bitmap = Bitmap.createBitmap(pixels, mImageWidth, mImageHeight, Bitmap.Config.ARGB_8888);
+
+                int colorCodeAtRightBottomPixel = bitmap.getPixel(mImageWidth - 1, mImageHeight - 1);
+                showToastStatic("pixels dizisi length: " + pixels.length + "foto en boy: y" + mImageHeight + "x" + mImageWidth + " En sağ alt köşe pixelin rgb değeri r:"
+                        + Color.red(colorCodeAtRightBottomPixel) + " g:" + Color.green(colorCodeAtRightBottomPixel)+ " b:"+ Color.blue(colorCodeAtRightBottomPixel), activity);
+
+                File mFile = createImageFile(activity);
+                try (FileOutputStream out = new FileOutputStream(mFile)) {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
+                    // PNG is a lossless format, the compression factor (100) is ignored
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+//                ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
+//                byte[] bytes = new byte[buffer.remaining()];
+//                buffer.get(bytes);
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length,null);
+
+
+//                int mWidth = mImage.getWidth();
+////                int mHeight = mImage.getHeight();
+
+                //System.out.println("video: creating bitmap");
+                //try{
+//                byte[] bits = new byte[mWidth * mHeight * 4];
+//
+//                Bitmap bitmap = Bitmap.createBitmap(mImage.getWidth(),mImage.getWidth(), Bitmap.Config.ARGB_8888);
+//                //bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(bits));
+//
+//                ByteBuffer buffer = ByteBuffer.wrap(bits);
+//                buffer.rewind();
+//
+//
+//                bitmap.copyPixelsFromBuffer(buffer);
+
+                //}catch(OutOfMemoryError ex){
+
+                //}
+                //System.out.println("video: bitmap created");
+
+
+
+//                mImage.getPlanes()[0].getBuffer().get(bits);
+//                mImage.close();
+//                Bitmap bitmap = BitmapFactory.decodeByteArray(rgbaBytes,0,rgbaBytes.length,null);
+
+
+//                if(bits==null)
+//                    showToastStatic("bit boş", activity);
+//                else
+//                    showToastStatic("bit dolu" , activity);
+//                if(bitmap == null)
+//                    showToastStatic("bitmap boş", activity);
+//                else
+//                    showToastStatic("bitmap dolu" , activity);
+//
+//                int pixel = bitmap.getPixel(150,120); //Burayı döngüye alıp hesaplamaları yaptırabilirsiniz
+//                int redValue = Color.red(pixel);
+//                int blueValue = Color.blue(pixel);
+//                int greenValue = Color.green(pixel);
+//                showToastStatic("cekiyor red:" + redValue + "cekiyor green:" + greenValue + "cekiyor blue:" + blueValue, activity);
+                mutex.release();
+            }catch (Exception e)
+            {
+                showToastStatic("Exception yedik", activity);
+                showToastStatic(e.getMessage(), activity);
+            }
+
+
+
+            //Burdaki kodlar bittikten sonra bu fonksiyonun adını değiştir, save fonksiyonu yerine çekilen fotoları işleme fonksiyonu olsun
         }
 
     }
