@@ -1,4 +1,4 @@
-#Fri Aug 16 18:03:04 MSK 2019
+#Wed Aug 21 20:43:49 MSK 2019
 base.0=C\:\\Users\\ENS\\Desktop\\Git Projeleri\\android-Camera2Basic\\Application\\build\\intermediates\\transforms\\dexMerger\\debug\\0
 path.0=classes.dex
 renamed.0=classes.dex

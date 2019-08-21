@@ -1,6 +1,7 @@
 package com.example.android.camera2basic;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -57,6 +58,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+
+import static java.lang.StrictMath.abs;
 
 public class CameraUtils {
 
@@ -793,9 +796,11 @@ public class CameraUtils {
                 }
             };
             List<CaptureRequest> captureList = new ArrayList<CaptureRequest>();
-            for (int i=0;i<1;i++) {
+            for (int i=0;i<29;i++) {
                 captureList.add(captureBuilder.build());
             }
+
+
 //            Cancel any ongoing repeating capture set by either setRepeatingRequest or setRepeatingBurst(List , CameraCaptureSession.CaptureCallback, Handler). Has no effect on requests submitted through capture or captureBurst.
             mCaptureSession.stopRepeating();
             mCaptureSession.abortCaptures();
@@ -873,72 +878,77 @@ public class CameraUtils {
             this.c2bFragment = c2bFragment;
             this.activity = activity;
         }
+
         /**
          * Converts YUV420 NV21 to RGB8888
          *
-         * @param data byte array on YUV420 NV21 format.
-         * @param width pixels width
+         * @param data   byte array on YUV420 NV21 format.
+         * @param width  pixels width
          * @param height pixels height
          * @return a RGB8888 pixels int array. Where each int is a pixels ARGB.
          */
-        public static int[] convertYUV420_NV21toRGB8888(byte [] data, int width, int height) {
-            int size = width*height;
+        public static int[] convertYUV420_NV21toRGB8888(byte[] data, int width, int height) {
+            int size = width * height;
             int offset = size;
             int[] pixels = new int[size];
             int u, v, y1, y2, y3, y4;
 
             // i percorre os Y and the final pixels
             // k percorre os pixles U e V
-            for(int i=0, k=0; i < size; i+=2, k+=2) {
-                y1 = data[i  ]&0xff;
-                y2 = data[i+1]&0xff;
-                y3 = data[width+i  ]&0xff;
-                y4 = data[width+i+1]&0xff;
+            for (int i = 0, k = 0; i < size; i += 2, k += 2) {
+                y1 = data[i] & 0xff;
+                y2 = data[i + 1] & 0xff;
+                y3 = data[width + i] & 0xff;
+                y4 = data[width + i + 1] & 0xff;
 
-                u = data[offset+k  ]&0xff;
-                v = data[offset+k+1]&0xff;
-                u = u-128;
-                v = v-128;
+                u = data[offset + k] & 0xff;
+                v = data[offset + k + 1] & 0xff;
+                u = u - 128;
+                v = v - 128;
 
-                pixels[i  ] = convertYUVtoRGB(y1, u, v);
-                pixels[i+1] = convertYUVtoRGB(y2, u, v);
-                pixels[width+i  ] = convertYUVtoRGB(y3, u, v);
-                pixels[width+i+1] = convertYUVtoRGB(y4, u, v);
+                pixels[i] = convertYUVtoRGB(y1, u, v);
+                pixels[i + 1] = convertYUVtoRGB(y2, u, v);
+                pixels[width + i] = convertYUVtoRGB(y3, u, v);
+                pixels[width + i + 1] = convertYUVtoRGB(y4, u, v);
 
-                if (i!=0 && (i+2)%width==0)
-                    i+=width;
+                if (i != 0 && (i + 2) % width == 0)
+                    i += width;
             }
 
             return pixels;
         }
 
         private static int convertYUVtoRGB(int y, int u, int v) {
-            int r,g,b;
+            int r, g, b;
 
-            r = y + (int)(1.772f*u);
-            g = y - (int)(0.344f*u +0.714f*v);
-            b = y + (int)(1.402f*v);
-            r = r>255? 255 : r<0 ? 0 : r;
-            g = g>255? 255 : g<0 ? 0 : g;
-            b = b>255? 255 : b<0 ? 0 : b;
-            return 0xff000000 | (b<<16) | (g<<8) | r;
+            r = y + (int) (1.772f * u);
+            g = y - (int) (0.344f * u + 0.714f * v);
+            b = y + (int) (1.402f * v);
+            r = r > 255 ? 255 : r < 0 ? 0 : r;
+            g = g > 255 ? 255 : g < 0 ? 0 : g;
+            b = b > 255 ? 255 : b < 0 ? 0 : b;
+            return 0xff000000 | (b << 16) | (g << 8) | r;
         }
 
-    private static File createImageFile(Activity activity) throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+        private static File createImageFile(Activity activity) throws IOException {
+            // Create an image file name
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
 
-        // Save a file: path for use with ACTION_VIEW intents
-        String currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
+            // Save a file: path for use with ACTION_VIEW intents
+            String currentPhotoPath = image.getAbsolutePath();
+            return image;
+        }
+
+        double distance(int refColor, int pixel) {
+            return Math.sqrt(Math.pow(Color.red(refColor) - Color.red(pixel), 2) + Math.pow(Color.blue(refColor) - Color.blue(pixel), 2) + Math.pow(Color.green(refColor) - Color.green(pixel), 2));
+        }
 
         @Override
         public void run() {
@@ -984,11 +994,11 @@ public class CameraUtils {
 
 //mimage'ı imagelListe atma kodunu tekrar etkinleştirin
 
-            try{
+            try {
                 mutex.acquire();
 
                 if (c2bFragment.globali++ >= 29) {
-                   showToastStatic("artık endişeli değilim 10 foto çektik :P:D", activity);
+                    showToastStatic("artık endişeli değilim 10 foto çektik :P:D", activity);
                 }
 
                 Image.Plane Y = mImage.getPlanes()[0];
@@ -1004,16 +1014,68 @@ public class CameraUtils {
 
                 Y.getBuffer().get(data, 0, Yb);
                 U.getBuffer().get(data, Yb, Ub);
-                V.getBuffer().get(data, Yb+ Ub, Vb);
+                V.getBuffer().get(data, Yb + Ub, Vb);
                 int mImageWidth = mImage.getWidth();
                 int mImageHeight = mImage.getHeight();
-
+                int pixelsmHeightSum = 0;
+                int pixelsmWidthSum = 0;
+                int divide = 0;
                 int[] pixels = convertYUV420_NV21toRGB8888(data, mImageWidth, mImageHeight);
                 Bitmap bitmap = Bitmap.createBitmap(pixels, mImageWidth, mImageHeight, Bitmap.Config.ARGB_8888);
 
-                int colorCodeAtRightBottomPixel = bitmap.getPixel(mImageWidth - 1, mImageHeight - 1);
-                showToastStatic("pixels dizisi length: " + pixels.length + "foto en boy: y" + mImageHeight + "x" + mImageWidth + " En sağ alt köşe pixelin rgb değeri r:"
-                        + Color.red(colorCodeAtRightBottomPixel) + " g:" + Color.green(colorCodeAtRightBottomPixel)+ " b:"+ Color.blue(colorCodeAtRightBottomPixel), activity);
+
+                //int colorCodeAtRightBottomPixel = bitmap.getPixel((mImageWidth - 4), (mImageHeight - 4));
+
+                int reference = Color.RED;
+
+                for (int i = 0; i <= mImageHeight - 1; ++i) {
+                    for (int a = 0; a <= mImageWidth - 1; ++a) {
+                        int pixel = bitmap.getPixel(a, i);
+                        if (distance(reference, pixel) < 10) {
+                            pixelsmHeightSum += i;
+                            pixelsmWidthSum += a;
+                            divide++;
+                        }
+                    }
+                }
+
+//                for (int i = 0; i <= mImageHeight - 1; ++i) {
+//                    for (int a = 0; a <= mImageWidth - 1; ++a) {
+//                        int colorDetect = bitmap.getPixel(a, i);
+//                        if (Color.red(colorDetect) > 235 & Color.green(colorDetect) < 55 & Color.blue(colorDetect) < 55) {
+//                            pixelsmHeightSum += i;
+//                            pixelsmWidthSum += a;
+//                            divide++;
+//                        }
+//                    }
+//                }
+                double centerRedHeight = 0;
+                double centerRedWidth = 0;
+                try {
+                    centerRedHeight = pixelsmHeightSum / divide;
+                    centerRedWidth = pixelsmWidthSum / divide;
+
+                    double deviationFromCenter = abs(centerRedWidth - ((mImageWidth - 1) / 2));
+
+                    double totalDeviation = 0;
+                    totalDeviation += deviationFromCenter;
+                    int divideDev = 0;
+                    divideDev++;
+
+                    showToastStatic("Kırmızı noktaların merkezi:" + centerRedHeight + "," + centerRedWidth + "Merkezden sapma:" + deviationFromCenter, activity);
+
+                    //showToastStatic("yeni versiyon -10 pixels dizisi length: " + pixels.length + "foto en boy: y" + mImageHeight + "x" + mImageWidth + " En sağ alt köşe pixelin rgb değeri r:"
+                    //+ Color.red(colorCodeAtRightBottomPixel) + " g:" + Color.green(colorCodeAtRightBottomPixel)+ " b:"+ Color.blue(colorCodeAtRightBottomPixel), activity);
+                    if (c2bFragment.globali++ >= 29) {
+                        totalDeviation /= divideDev;
+                        new CameraUtils.InformationDialog("Merkezden Ortalama Sapma:" + totalDeviation).show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
+                        //showToastStatic("Merkezden Ortalama Sapma:" + totalDeviation,activity);
+                    }
+                } catch (Exception e) {
+                    showToastStatic("No red light found", activity);
+
+                }
+
 
                 File mFile = createImageFile(activity);
                 try (FileOutputStream out = new FileOutputStream(mFile)) {
@@ -1051,7 +1113,6 @@ public class CameraUtils {
                 //System.out.println("video: bitmap created");
 
 
-
 //                mImage.getPlanes()[0].getBuffer().get(bits);
 //                mImage.close();
 //                Bitmap bitmap = BitmapFactory.decodeByteArray(rgbaBytes,0,rgbaBytes.length,null);
@@ -1072,12 +1133,10 @@ public class CameraUtils {
 //                int greenValue = Color.green(pixel);
 //                showToastStatic("cekiyor red:" + redValue + "cekiyor green:" + greenValue + "cekiyor blue:" + blueValue, activity);
                 mutex.release();
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 showToastStatic("Exception yedik", activity);
                 showToastStatic(e.getMessage(), activity);
             }
-
 
 
             //Burdaki kodlar bittikten sonra bu fonksiyonun adını değiştir, save fonksiyonu yerine çekilen fotoları işleme fonksiyonu olsun
@@ -1159,6 +1218,27 @@ public class CameraUtils {
                                     }
                                 }
                             })
+                    .create();
+        }
+    }
+
+    @SuppressLint("ValidFragment")
+    public static class InformationDialog extends DialogFragment {
+
+        public String infoMessage;
+
+        @SuppressLint("ValidFragment")
+        public InformationDialog(String infoMessage) {
+            this.infoMessage = infoMessage;
+        }
+
+        @NonNull
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            final Fragment parent = getParentFragment();
+            return new AlertDialog.Builder(getActivity())
+                    .setMessage(infoMessage)
+                    .setPositiveButton(android.R.string.ok, null)
                     .create();
         }
     }
