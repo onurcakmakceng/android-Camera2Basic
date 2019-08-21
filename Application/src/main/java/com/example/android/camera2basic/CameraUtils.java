@@ -946,9 +946,7 @@ public class CameraUtils {
             return image;
         }
 
-        double distance(int refColor, int pixel) {
-            return Math.sqrt(Math.pow(Color.red(refColor) - Color.red(pixel), 2) + Math.pow(Color.blue(refColor) - Color.blue(pixel), 2) + Math.pow(Color.green(refColor) - Color.green(pixel), 2));
-        }
+
 
         @Override
         public void run() {
@@ -1026,29 +1024,18 @@ public class CameraUtils {
 
                 //int colorCodeAtRightBottomPixel = bitmap.getPixel((mImageWidth - 4), (mImageHeight - 4));
 
-                int reference = Color.RED;
-
                 for (int i = 0; i <= mImageHeight - 1; ++i) {
                     for (int a = 0; a <= mImageWidth - 1; ++a) {
-                        int pixel = bitmap.getPixel(a, i);
-                        if (distance(reference, pixel) < 10) {
-                            pixelsmHeightSum += i;
-                            pixelsmWidthSum += a;
-                            divide++;
+                        int colorDetect = bitmap.getPixel(a, i);
+                        if (Color.red(colorDetect) > 236 ){
+
+                                pixelsmHeightSum += i;
+                                pixelsmWidthSum += a;
+                                divide++;
+
                         }
                     }
                 }
-
-//                for (int i = 0; i <= mImageHeight - 1; ++i) {
-//                    for (int a = 0; a <= mImageWidth - 1; ++a) {
-//                        int colorDetect = bitmap.getPixel(a, i);
-//                        if (Color.red(colorDetect) > 235 & Color.green(colorDetect) < 55 & Color.blue(colorDetect) < 55) {
-//                            pixelsmHeightSum += i;
-//                            pixelsmWidthSum += a;
-//                            divide++;
-//                        }
-//                    }
-//                }
                 double centerRedHeight = 0;
                 double centerRedWidth = 0;
                 try {
