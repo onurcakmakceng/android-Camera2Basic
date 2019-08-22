@@ -422,7 +422,7 @@ public class Camera2BasicFragment extends Fragment
 //        return new Camera2BasicFragment();
 //    }
 
-    private CameraUtils cmUtils[] = new CameraUtils[2];
+    private CameraUtils[] cmUtils = new CameraUtils[2];
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -437,7 +437,7 @@ public class Camera2BasicFragment extends Fragment
         view.findViewById(R.id.info).setOnClickListener(this);
         for (int i = 0; i < 1; i++) {
             cmUtils[i] = new CameraUtils(getActivity(), this);
-            cmUtils[i].mTextureView  = (AutoFitTextureView) view.findViewById(R.id.texture);
+            cmUtils[i].mTextureView  = view.findViewById(R.id.texture);
         }
     }
 
