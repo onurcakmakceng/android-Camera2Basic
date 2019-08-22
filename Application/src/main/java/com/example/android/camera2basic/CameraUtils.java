@@ -796,7 +796,7 @@ public class CameraUtils {
                 }
             };
             List<CaptureRequest> captureList = new ArrayList<CaptureRequest>();
-            for (int i=0;i<29;i++) {
+            for (int i=0;i<30;i++) {
                 captureList.add(captureBuilder.build());
             }
 
@@ -996,7 +996,7 @@ public class CameraUtils {
                 mutex.acquire();
 
                 if (c2bFragment.globali++ >= 29) {
-                    showToastStatic("artık endişeli değilim 10 foto çektik :P:D", activity);
+                    showToastStatic("artık endişeli değilim 30 foto çektik :P:D", activity);
                 }
 
                 Image.Plane Y = mImage.getPlanes()[0];
@@ -1059,18 +1059,20 @@ public class CameraUtils {
                         //showToastStatic("Merkezden Ortalama Sapma:" + totalDeviation,activity);
                     }
                 } catch (Exception e) {
-                    showToastStatic("No red light found", activity);
+                  // gecici olarka kapildi diger showtoastlarin gorunabilmesi ici   showToastStatic("No red light found", activity);
 
+                } finally {
+                    File mFile = createImageFile(activity);
+                    try (FileOutputStream out = new FileOutputStream(mFile)) {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
+                        // PNG is a lossless format, the compression factor (100) is ignored
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
 
-                File mFile = createImageFile(activity);
-                try (FileOutputStream out = new FileOutputStream(mFile)) {
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
-                    // PNG is a lossless format, the compression factor (100) is ignored
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
 
 //                ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
 //                byte[] bytes = new byte[buffer.remaining()];

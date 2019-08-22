@@ -60,6 +60,7 @@
       <change beforePath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ErrorDialog$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ErrorDialog$1.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ErrorDialog.class" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ErrorDialog.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ImageSaver.class" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils$ImageSaver.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils.class" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/classes/debug/com/example/android/camera2basic/CameraUtils.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/incremental/packageDebug/tmp/debug/dex-renamer-state.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/build/intermediates/transforms/dexMerger/debug/__content__.json" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/intermediates/transforms/dexMerger/debug/__content__.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Application/build/outputs/apk/debug/Application-debug.apk" beforeDir="false" afterPath="$PROJECT_DIR$/Application/build/outputs/apk/debug/Application-debug.apk" afterDir="false" />
@@ -87,18 +88,18 @@
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Application/src/main/res/layout/fragment_camera2_basic.xml">
-          <provider selected="true" editor-type-id="android-designer2" />
           <provider editor-type-id="text-editor">
             <state relative-caret-position="578">
               <caret line="34" selection-start-line="34" selection-end-line="34" />
             </state>
           </provider>
+          <provider selected="true" editor-type-id="android-designer2" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Application/src/main/res/layout/activity_camera.xml">
-          <provider selected="true" editor-type-id="android-designer2" />
           <provider editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="android-designer2" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -115,19 +116,23 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Application/src/main/res/layout-land/fragment_camera2_basic.xml">
-          <provider selected="true" editor-type-id="android-designer2" />
           <provider editor-type-id="text-editor">
             <state relative-caret-position="680">
               <caret line="40" column="24" selection-start-line="40" selection-start-column="24" selection-end-line="40" selection-end-column="24" />
             </state>
           </provider>
+          <provider selected="true" editor-type-id="android-designer2" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="1044" column="63" selection-start-line="1044" selection-start-column="63" selection-end-line="1044" selection-end-column="63" />
+            <state relative-caret-position="-13336">
+              <caret line="242" column="86" selection-start-line="242" selection-start-column="70" selection-end-line="242" selection-end-column="86" />
+              <folding>
+                <element signature="e#7150#7518#0" expanded="true" />
+                <element signature="e#7517#7518#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -192,10 +197,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>callba</find>
-      <find>maxImages</find>
-      <find>capture</find>
-      <find>flash</find>
       <find>30</find>
       <find>&lt;app</find>
       <find>manifest</find>
@@ -222,6 +223,10 @@
       <find>callback</find>
       <find>i=</find>
       <find>i=0</find>
+      <find>Save</find>
+      <find>globali</find>
+      <find>handler</find>
+      <find>mOnImageAvailableListener</find>
     </findStrings>
     <replaceStrings>
       <replace>1</replace>
@@ -378,7 +383,7 @@
       <window_info anchor="bottom" id="TODO" order="1" />
       <window_info anchor="bottom" id="Terminal" order="2" weight="0.32936078" />
       <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.50159913" side_tool="true" weight="0.3051948" />
-      <window_info anchor="bottom" id="Build" order="4" sideWeight="0.49840087" visible="true" weight="0.30194804" />
+      <window_info anchor="bottom" id="Build" order="4" sideWeight="0.49840087" weight="0.30194804" />
       <window_info anchor="bottom" id="Android Profiler" order="5" show_stripe_button="false" />
       <window_info anchor="bottom" id="Logcat" order="6" weight="0.32936078" />
       <window_info anchor="bottom" id="Find" order="7" sideWeight="0.4989339" weight="0.32900432" />
@@ -406,11 +411,11 @@
       <window_info anchor="bottom" id="Version Control" order="0" weight="0.32936078" />
       <window_info anchor="bottom" id="TODO" order="1" />
       <window_info anchor="bottom" id="Terminal" order="2" weight="0.32936078" />
-      <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.50159913" side_tool="true" visible="true" weight="0.3051948" />
-      <window_info active="true" anchor="bottom" id="Build" order="4" sideWeight="0.49840087" visible="true" weight="0.3051948" />
+      <window_info anchor="bottom" id="Event Log" order="3" sideWeight="0.50159913" side_tool="true" weight="0.3051948" />
+      <window_info active="true" anchor="bottom" id="Build" order="4" sideWeight="0.49840087" visible="true" weight="0.30194804" />
       <window_info anchor="bottom" id="Android Profiler" order="5" show_stripe_button="false" />
       <window_info anchor="bottom" id="Logcat" order="6" weight="0.32936078" />
-      <window_info anchor="bottom" id="Find" order="7" sideWeight="0.4989339" weight="0.32936078" />
+      <window_info anchor="bottom" id="Find" order="7" sideWeight="0.4989339" weight="0.32900432" />
       <window_info anchor="bottom" id="Run" order="8" weight="0.32936078" />
       <window_info anchor="bottom" id="Debug" order="9" sideWeight="0.7153518" weight="0.32936078" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
@@ -420,7 +425,7 @@
       <window_info anchor="right" id="Device File Explorer" order="4" side_tool="true" weight="0.4003198" />
       <window_info anchor="right" id="Hierarchy" order="5" weight="0.32995737" />
       <window_info anchor="right" id="Preview" order="6" weight="0.32995737" />
-      <window_info anchor="right" x="0" y="0" width="434" height="856" id="Documentation" order="7" side_tool="true" visible="true" weight="0.32995737" />
+      <window_info active="true" anchor="right" x="0" y="0" width="434" height="856" id="Documentation" order="7" side_tool="true" visible="true" weight="0.25692964" />
     </layout-to-restore>
   </component>
   <component name="editorHistoryManager">
@@ -495,16 +500,16 @@
       <provider editor-type-id="android-manifest" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Application/src/main/res/layout/fragment_camera2_basic.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
       <provider editor-type-id="text-editor">
         <state relative-caret-position="578">
           <caret line="34" selection-start-line="34" selection-end-line="34" />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Application/src/main/res/layout/activity_camera.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
       <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -517,12 +522,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Application/src/main/res/layout-land/fragment_camera2_basic.xml">
-      <provider selected="true" editor-type-id="android-designer2" />
       <provider editor-type-id="text-editor">
         <state relative-caret-position="680">
           <caret line="40" column="24" selection-start-line="40" selection-start-column="24" selection-end-line="40" selection-end-column="24" />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/kotlinApp/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.kt">
       <provider selected="true" editor-type-id="text-editor">
@@ -565,8 +570,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Application/src/main/java/com/example/android/camera2basic/CameraUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="1044" column="63" selection-start-line="1044" selection-start-column="63" selection-end-line="1044" selection-end-column="63" />
+        <state relative-caret-position="-13336">
+          <caret line="242" column="86" selection-start-line="242" selection-start-column="70" selection-end-line="242" selection-end-column="86" />
+          <folding>
+            <element signature="e#7150#7518#0" expanded="true" />
+            <element signature="e#7517#7518#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
