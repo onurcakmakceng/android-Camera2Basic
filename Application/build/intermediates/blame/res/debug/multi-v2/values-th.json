@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\ENS\\Desktop\\Git Projeleri\\android-Camera2Basic\\Application\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-th\\values-th.xml",
+            "outputFile": "D:\\Users\\Honour\\AndroidStudioProjects\\android-Camera2Basic-master\\Application\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-th\\values-th.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\ENS\\.gradle\\caches\\transforms-2\\files-2.1\\506f15827f7f09f7b44bb75d5c4a62dc\\res\\values-th\\values-th.xml",
+                    "source": "C:\\Users\\Honour\\.gradle\\caches\\transforms-2\\files-2.1\\56016b078680545b70ebd66d5fb4e7af\\res\\values-th\\values-th.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -14,7 +14,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\ENS\\.gradle\\caches\\transforms-2\\files-2.1\\ecb2016a13448ee4f162de93ab10a1e1\\res\\values-th\\values-th.xml",
+                    "source": "C:\\Users\\Honour\\.gradle\\caches\\transforms-2\\files-2.1\\3dcc5bc6e61569610c981caebc9d604f\\res\\values-th\\values-th.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

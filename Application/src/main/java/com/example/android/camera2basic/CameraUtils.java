@@ -288,10 +288,12 @@ public class CameraUtils {
                 }
                 case STATE_WAITING_LOCK: {
                     Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
+                    showToast(""+afState);
                     if (afState == null) {
                         captureStillPicture();
                     } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState ||
-                            CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState) {
+                            CaptureResult.CONTROL_AF_STATE_NOT_FOCUSED_LOCKED == afState ||
+                            2 == afState) {
                         // CONTROL_AE_STATE can be null on some devices
                         Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                         if (aeState == null ||
@@ -308,6 +310,7 @@ public class CameraUtils {
                     // CONTROL_AE_STATE can be null on some devices
                     Integer aeState = result.get(CaptureResult.CONTROL_AE_STATE);
                     if (aeState == null ||
+                            aeState == 0 ||
                             aeState == CaptureResult.CONTROL_AE_STATE_PRECAPTURE ||
                             aeState == CaptureRequest.CONTROL_AE_STATE_FLASH_REQUIRED) {
                         mState = STATE_WAITING_NON_PRECAPTURE;
@@ -950,7 +953,7 @@ public class CameraUtils {
 
         @Override
         public void run() {
-//
+//showToastStatic("lölölölö", activity);
 //            byte[] bytes = new byte[buffer.remaining()];
 //            buffer.get(bytes);
 //            FileOutputStream output = null;
@@ -995,9 +998,9 @@ public class CameraUtils {
             try {
                 mutex.acquire();
 
-                if (c2bFragment.globali++ >= 29) {
-                    showToastStatic("artık endişeli değilim 30 foto çektik :P:D", activity);
-                }
+//                if (c2bFragment.globali++ >= 29) {
+//                    showToastStatic("artık endişeli değilim 30 foto çektik :P:D", activity);
+//                }
 
                 Image.Plane Y = mImage.getPlanes()[0];
                 Image.Plane U = mImage.getPlanes()[1];
@@ -1049,19 +1052,21 @@ public class CameraUtils {
                     int divideDev = 0;
                     divideDev++;
 
+
                     showToastStatic("Kırmızı noktaların merkezi:" + centerRedHeight + "," + centerRedWidth + "Merkezden sapma:" + deviationFromCenter, activity);
 
                     //showToastStatic("yeni versiyon -10 pixels dizisi length: " + pixels.length + "foto en boy: y" + mImageHeight + "x" + mImageWidth + " En sağ alt köşe pixelin rgb değeri r:"
                     //+ Color.red(colorCodeAtRightBottomPixel) + " g:" + Color.green(colorCodeAtRightBottomPixel)+ " b:"+ Color.blue(colorCodeAtRightBottomPixel), activity);
-                    if (c2bFragment.globali++ >= 29) {
+                    if (c2bFragment.globali >= 29) {
                         totalDeviation /= divideDev;
                         new CameraUtils.InformationDialog("Merkezden Ortalama Sapma:" + totalDeviation).show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
                         //showToastStatic("Merkezden Ortalama Sapma:" + totalDeviation,activity);
                     }
                 } catch (Exception e) {
-                  // gecici olarka kapildi diger showtoastlarin gorunabilmesi ici   showToastStatic("No red light found", activity);
+                     showToastStatic("No red light found", activity);
 
                 } finally {
+                    ++c2bFragment.globali;
                     File mFile = createImageFile(activity);
                     try (FileOutputStream out = new FileOutputStream(mFile)) {
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance

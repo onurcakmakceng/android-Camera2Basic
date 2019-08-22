@@ -1,29 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\ENS\\Desktop\\Git Projeleri\\android-Camera2Basic\\Application\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "D:\\Users\\Honour\\AndroidStudioProjects\\android-Camera2Basic-master\\Application\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\ENS\\Desktop\\Git Projeleri\\android-Camera2Basic\\Application\\src\\main\\res\\values\\template-styles.xml",
-                    "from": {
-                        "startLines": "24,20,22,27,29,34",
-                        "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "792,671,735,876,907,1109",
-                        "endLines": "24,20,22,27,32,39",
-                        "endColumns": "51,60,53,27,12,12",
-                        "endOffsets": "839,727,784,899,1101,1387"
-                    },
-                    "to": {
-                        "startLines": "467,1777,1778,1786,1883,1887",
-                        "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "41679,128368,128428,129153,136889,137085",
-                        "endLines": "467,1777,1778,1786,1886,1892",
-                        "endColumns": "50,59,52,26,12,12",
-                        "endOffsets": "41725,128423,128476,129175,137080,137358"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\ENS\\.gradle\\caches\\transforms-2\\files-2.1\\506f15827f7f09f7b44bb75d5c4a62dc\\res\\values\\values.xml",
+                    "source": "C:\\Users\\Honour\\.gradle\\caches\\transforms-2\\files-2.1\\56016b078680545b70ebd66d5fb4e7af\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,251,252,253,254,255,256,257,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,397,398,402,406,410,415,421,428,432,436,441,445,449,453,457,461,465,469,473,477,481,485,489,494,498,501,505,509,513,517,521,525,528,532,536,540,544,548,549,550,551,554,557,560,563,567,568,569,570,571,574,576,578,580,585,586,590,596,600,601,603,614,615,619,625,629,630,631,635,662,666,667,671,699,865,887,1053,1075,1102,1109,1114,1128,1150,1155,1160,1170,1179,1188,1192,1199,1207,1214,1215,1224,1227,1230,1234,1238,1242,1245,1246,1250,1254,1264,1269,1276,1282,1283,1286,1290,1295,1297,1299,1302,1305,1307,1311,1314,1321,1324,1327,1331,1333,1337,1339,1345,1347,1351,1359,1367,1379,1385,1394,1397,1408,1411,1416,1417,1422,1464,1507,1508,1518,1527,1528,1530,1534,1537,1540,1543,1546,1550,1553,1556,1559,1563,1566,1570,1574,1575,1576,1577,1578,1579,1580,1581,1582,1583,1584,1585,1586,1587,1588,1589,1590,1591,1592,1593,1594,1596,1598,1599,1600,1601,1602,1603,1604,1605,1607,1608,1610,1611,1613,1615,1616,1618,1619,1620,1621,1622,1623,1625,1626,1627,1628,1629,1630,1632,1634,1636,1637,1638,1639,1640,1641,1642,1643,1644,1645,1646,1647,1648,1650,1651,1652,1653,1654,1655,1657,1661,1665,1666,1667,1668,1669,1670,1671,1672,1674,1676,1678,1680,1682,1683,1684,1685,1687,1689,1691,1692,1693,1694,1695,1696,1697,1698,1699,1700,1701,1702,1705,1706,1707,1708,1710,1712,1713,1715,1716,1718,1720,1722,1723,1724,1725,1726,1727,1728,1729,1730,1731,1732,1733,1735,1736,1737,1738,1740,1741,1742,1743,1744,1746,1748,1750,1752,1753,1754,1755,1756,1757,1758,1759,1760,1761,1762,1763,1764,1765",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -42,33 +23,31 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\ENS\\Desktop\\Git Projeleri\\android-Camera2Basic\\Application\\src\\main\\res\\values\\base-strings.xml",
+                    "source": "D:\\Users\\Honour\\AndroidStudioProjects\\android-Camera2Basic-master\\Application\\src\\main\\res\\values\\template-dimens.xml",
                     "from": {
-                        "startLines": "18,19",
-                        "startColumns": "4,4",
-                        "startOffsets": "665,716",
-                        "endLines": "18,28",
-                        "endColumns": "49,13",
-                        "endOffsets": "710,1004"
+                        "startLines": "28,24,23,22,21,20,29",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "959,880,836,791,748,706,1029",
+                        "endColumns": "69,42,43,44,42,41,67",
+                        "endOffsets": "1024,918,875,831,786,743,1092"
                     },
                     "to": {
-                        "startLines": "445,448",
-                        "startColumns": "4,4",
-                        "startOffsets": "40518,40701",
-                        "endLines": "445,457",
-                        "endColumns": "49,13",
-                        "endOffsets": "40563,40980"
+                        "startLines": "364,365,366,367,368,369,393",
+                        "startColumns": "4,4,4,4,4,4,4",
+                        "startOffsets": "35515,35585,35628,35672,35717,35760,37233",
+                        "endColumns": "69,42,43,44,42,41,67",
+                        "endOffsets": "35580,35623,35667,35712,35755,35797,37296"
                     }
                 },
                 {
-                    "source": "C:\\Users\\ENS\\Desktop\\Git Projeleri\\android-Camera2Basic\\Application\\src\\main\\res\\values\\styles.xml",
+                    "source": "D:\\Users\\Honour\\AndroidStudioProjects\\android-Camera2Basic-master\\Application\\src\\main\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "16",
                         "startColumns": "4",
-                        "startOffsets": "661",
+                        "startOffsets": "645",
                         "endLines": "18",
                         "endColumns": "12",
-                        "endOffsets": "805"
+                        "endOffsets": "787"
                     },
                     "to": {
                         "startLines": "1515",
@@ -80,7 +59,77 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\ENS\\.gradle\\caches\\transforms-2\\files-2.1\\6a9b48af0831e252045054161bd802f2\\res\\values\\values.xml",
+                    "source": "D:\\Users\\Honour\\AndroidStudioProjects\\android-Camera2Basic-master\\Application\\src\\main\\res\\values\\colors.xml",
+                    "from": {
+                        "startLines": "17",
+                        "startColumns": "4",
+                        "startOffsets": "646",
+                        "endColumns": "54",
+                        "endOffsets": "696"
+                    },
+                    "to": {
+                        "startLines": "33",
+                        "startColumns": "4",
+                        "startOffsets": "2273",
+                        "endColumns": "54",
+                        "endOffsets": "2323"
+                    }
+                },
+                {
+                    "source": "D:\\Users\\Honour\\AndroidStudioProjects\\android-Camera2Basic-master\\Application\\src\\main\\res\\values\\strings.xml",
+                    "from": {
+                        "startLines": "19,17,16,18",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "823,689,645,739",
+                        "endColumns": "82,49,43,83",
+                        "endOffsets": "901,734,684,818"
+                    },
+                    "to": {
+                        "startLines": "446,447,458,459",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "40568,40651,40985,41029",
+                        "endColumns": "82,49,43,83",
+                        "endOffsets": "40646,40696,41024,41108"
+                    }
+                },
+                {
+                    "source": "D:\\Users\\Honour\\AndroidStudioProjects\\android-Camera2Basic-master\\Application\\src\\main\\res\\values\\template-styles.xml",
+                    "from": {
+                        "startLines": "24,20,22,27,29,34",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "768,651,713,849,878,1075",
+                        "endLines": "24,20,22,27,32,39",
+                        "endColumns": "51,60,53,27,12,12",
+                        "endOffsets": "815,707,762,872,1069,1348"
+                    },
+                    "to": {
+                        "startLines": "467,1777,1778,1786,1883,1887",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "41679,128368,128428,129153,136889,137085",
+                        "endLines": "467,1777,1778,1786,1886,1892",
+                        "endColumns": "50,59,52,26,12,12",
+                        "endOffsets": "41725,128423,128476,129175,137080,137358"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Honour\\.gradle\\caches\\transforms-2\\files-2.1\\fed24967afb7f6cba908f62c44faaea3\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,6,7,8,9,10",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "55,348,414,536,597,663",
+                        "endColumns": "88,65,121,60,65,66",
+                        "endOffsets": "139,409,531,592,658,725"
+                    },
+                    "to": {
+                        "startLines": "57,1731,1733,1734,1739,1741",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "3747,124962,125138,125260,125522,125717",
+                        "endColumns": "88,65,121,60,65,66",
+                        "endOffsets": "3831,125023,125255,125316,125583,125779"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Honour\\.gradle\\caches\\transforms-2\\files-2.1\\7d5dc6d7d99a697c2b25ef25711cdee3\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,4,5,7,8,9,10,17,19,22",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4",
@@ -99,58 +148,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\ENS\\Desktop\\Git Projeleri\\android-Camera2Basic\\Application\\src\\main\\res\\values\\colors.xml",
-                    "from": {
-                        "startLines": "17",
-                        "startColumns": "4",
-                        "startOffsets": "663",
-                        "endColumns": "54",
-                        "endOffsets": "713"
-                    },
-                    "to": {
-                        "startLines": "33",
-                        "startColumns": "4",
-                        "startOffsets": "2273",
-                        "endColumns": "54",
-                        "endOffsets": "2323"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\ENS\\.gradle\\caches\\transforms-2\\files-2.1\\327d8512d018bff5233b2887ecfda6c1\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,6,7,8,9,10",
-                        "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "55,348,414,536,597,663",
-                        "endColumns": "88,65,121,60,65,66",
-                        "endOffsets": "139,409,531,592,658,725"
-                    },
-                    "to": {
-                        "startLines": "57,1731,1733,1734,1739,1741",
-                        "startColumns": "4,4,4,4,4,4",
-                        "startOffsets": "3747,124962,125138,125260,125522,125717",
-                        "endColumns": "88,65,121,60,65,66",
-                        "endOffsets": "3831,125023,125255,125316,125583,125779"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\ENS\\Desktop\\Git Projeleri\\android-Camera2Basic\\Application\\src\\main\\res\\values\\strings.xml",
-                    "from": {
-                        "startLines": "19,17,16,18",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "842,706,661,757",
-                        "endColumns": "82,49,43,83",
-                        "endOffsets": "920,751,700,836"
-                    },
-                    "to": {
-                        "startLines": "446,447,458,459",
-                        "startColumns": "4,4,4,4",
-                        "startOffsets": "40568,40651,40985,41029",
-                        "endColumns": "82,49,43,83",
-                        "endOffsets": "40646,40696,41024,41108"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\ENS\\.gradle\\caches\\transforms-2\\files-2.1\\ecb2016a13448ee4f162de93ab10a1e1\\res\\values\\values.xml",
+                    "source": "C:\\Users\\Honour\\.gradle\\caches\\transforms-2\\files-2.1\\3dcc5bc6e61569610c981caebc9d604f\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,54,55,59,60,61",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -169,20 +167,22 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\ENS\\Desktop\\Git Projeleri\\android-Camera2Basic\\Application\\src\\main\\res\\values\\template-dimens.xml",
+                    "source": "D:\\Users\\Honour\\AndroidStudioProjects\\android-Camera2Basic-master\\Application\\src\\main\\res\\values\\base-strings.xml",
                     "from": {
-                        "startLines": "28,24,23,22,21,20,29",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "987,904,859,813,769,726,1058",
-                        "endColumns": "69,42,43,44,42,41,67",
-                        "endOffsets": "1052,942,898,853,807,763,1121"
+                        "startLines": "18,19",
+                        "startColumns": "4,4",
+                        "startOffsets": "647,697",
+                        "endLines": "18,28",
+                        "endColumns": "49,13",
+                        "endOffsets": "692,976"
                     },
                     "to": {
-                        "startLines": "364,365,366,367,368,369,393",
-                        "startColumns": "4,4,4,4,4,4,4",
-                        "startOffsets": "35515,35585,35628,35672,35717,35760,37233",
-                        "endColumns": "69,42,43,44,42,41,67",
-                        "endOffsets": "35580,35623,35667,35712,35755,35797,37296"
+                        "startLines": "445,448",
+                        "startColumns": "4,4",
+                        "startOffsets": "40518,40701",
+                        "endLines": "445,457",
+                        "endColumns": "49,13",
+                        "endOffsets": "40563,40980"
                     }
                 }
             ]
