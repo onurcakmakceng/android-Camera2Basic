@@ -10,8 +10,6 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Camera;
 import android.graphics.Color;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
@@ -43,13 +41,11 @@ import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -956,31 +952,41 @@ public class CameraUtils {
             return image;
         }
 
-        private static Bitmap rotate(Bitmap bitmap, float rotateAngle) {
+        /**
+         * This method rotates the matrix 90 degrees clockwise by using extra
+         * buffer.
+         * @param matrix
+         */
+        public static int[][] rotateMatrix90Clockwise(int[][] matrix) {
+            int[][] rotated = new int[matrix[0].length][matrix.length];
 
-            int width = bitmap.getWidth();
+            for (int i = 0; i < matrix[0].length; ++i) {
+                for (int j = 0; j < matrix.length; ++j) {
 
-            int height = bitmap.getHeight();
 
+                    rotated[i][j] = matrix[matrix.length - j - 1][i];
 
-//            int newWidth = 200;
-//
-//            int newHeight  = 200;
-//
-//            // calculate the scale - in this case = 0.4f
-//
-//            float scaleWidth = ((float) newWidth) / width;
-//
-//            float scaleHeight = ((float) newHeight) / height;
+                }
+            }
 
-            Matrix matrix = new Matrix();
+            return rotated;
+        }
 
-//            matrix.postScale(scaleWidth, scaleHeight);
-            matrix.postRotate(rotateAngle);
+        /**
+         * This method rotates the matrix 90 degrees counter clockwise by using extra
+         * buffer.
+         */
+        public static int[][] rotateMatrix90CounterClockwise(int[][] matrix) {
+            int[][] rotated = new int[matrix[0].length][matrix.length];
 
-            Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+            for (int i = 0; i < matrix[0].length; ++i) {
+                for (int j = 0; j < matrix.length; ++j) {
 
-            return resizedBitmap;
+                    rotated[i][j] = matrix[j][matrix[0].length - i - 1];
+                }
+            }
+
+            return rotated;
         }
 
         @Override
@@ -1061,6 +1067,30 @@ public class CameraUtils {
                     }
                 }
 
+                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+
+                int temp = 0;
+                switch (getOrientation(rotation) ) {
+                    case 180:
+                        temp = mImageWidth;
+                        mImageWidth = mImageHeight;
+                        mImageHeight = temp;
+                        array2D = rotateMatrix90Clockwise(array2D);
+                    case 90:
+                        temp = mImageWidth;
+                        mImageWidth = mImageHeight;
+                        mImageHeight = temp;
+                        array2D = rotateMatrix90Clockwise(array2D);
+                        break;
+                    case 270:
+                        temp = mImageWidth;
+                        mImageWidth = mImageHeight;
+                        mImageHeight = temp;
+                        array2D = rotateMatrix90CounterClockwise(array2D);
+                        break;
+                };
+
+
                 for (int y = 0; y < mImageHeight; ++y) {
                     for (int x = 0; x < mImageWidth; ++x) {
                         int colorDetect = array2D[y][x];
@@ -1074,7 +1104,13 @@ public class CameraUtils {
                     }
                 }
 
-
+//                for (int y = 0; y < mImageHeight; y++) {
+//                    for (int x = 0; x < mImageWidth; x++) {
+//                        int pixelsPlace = x + y * mImageWidth;
+//                        pixels[pixelsPlace] = array2D[y][x];
+//                    }
+//                }
+//
 //                Bitmap bitmap = Bitmap.createBitmap(pixels, mImageWidth, mImageHeight, Bitmap.Config.ARGB_8888);
 //
 //
@@ -1139,7 +1175,7 @@ public class CameraUtils {
                     ++c2bFragment.globali;
 //                    File mFile = createImageFile(activity);
 //                    try (FileOutputStream out = new FileOutputStream(mFile)) {
-//                        orientatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
+//                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
 //                        // PNG is a lossless format, the compression factor (100) is ignored
 //                    } catch (IOException e) {
 //                        e.printStackTrace();
