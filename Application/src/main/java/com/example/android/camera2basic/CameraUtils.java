@@ -43,6 +43,7 @@ import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.TextureView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -275,7 +276,7 @@ public class CameraUtils {
     /**
      * Orientation of the camera sensor
      */
-    private int mSensorOrientation;
+    private static int mSensorOrientation;
 
     private CameraCaptureSession.CaptureCallback mCaptureCallback
             = new CameraCaptureSession.CaptureCallback() {
@@ -284,6 +285,11 @@ public class CameraUtils {
             switch (mState) {
                 case STATE_PREVIEW: {
                     // We have nothing to do when the camera preview is working normally.
+                    if( c2bFragment.globali % 2 == 0 && c2bFragment.globali != 0 && c2bFragment.globali < 30) {
+                        Log.d("HEYOO", "GİRDİM Kİ");
+                        mState = STATE_WAITING_PRECAPTURE;
+                    }
+                    // 30 burst  yaparken STATE_WAITING_PRECAPTURE stateine düşür, 30lu bitince açı değiştirip yeni 30luyu çekerken STATE_WAITING_LOCK buna düşür tekrar focus ayarlayıp öyle çeksin
                     break;
                 }
                 case STATE_WAITING_LOCK: {
@@ -783,8 +789,8 @@ public class CameraUtils {
             captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
 
             // Orientation
-            int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(rotation));
+//            int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+//            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, getOrientation(rotation));
 
             CameraCaptureSession.CaptureCallback CaptureCallback
                     = new CameraCaptureSession.CaptureCallback() {
@@ -799,7 +805,7 @@ public class CameraUtils {
                 }
             };
             List<CaptureRequest> captureList = new ArrayList<CaptureRequest>();
-            for (int i=0;i<30;i++) {
+            for (int i=0;i<2;i++) {
                 captureList.add(captureBuilder.build());
             }
 
@@ -819,7 +825,7 @@ public class CameraUtils {
      * @param rotation The screen rotation.
      * @return The JPEG orientation (one of 0, 90, 270, and 360)
      */
-    private int getOrientation(int rotation) {
+    private static int getOrientation(int rotation) {
         // Sensor orientation is 90 for most devices, or 270 for some devices (eg. Nexus 5X)
         // We have to take that into account and rotate JPEG properly.
         // For devices with orientation of 90, we simply return our mapping from ORIENTATIONS.
@@ -949,7 +955,33 @@ public class CameraUtils {
             return image;
         }
 
+        private static Bitmap rotate(Bitmap bitmap, float rotateAngle)
+        {
 
+            int width = bitmap.getWidth();
+
+            int height = bitmap.getHeight();
+
+
+//            int newWidth = 200;
+//
+//            int newHeight  = 200;
+//
+//            // calculate the scale - in this case = 0.4f
+//
+//            float scaleWidth = ((float) newWidth) / width;
+//
+//            float scaleHeight = ((float) newHeight) / height;
+
+            Matrix matrix = new Matrix();
+
+//            matrix.postScale(scaleWidth, scaleHeight);
+            matrix.postRotate(rotateAngle);
+
+            Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,width, height, matrix, true);
+
+            return resizedBitmap;
+        }
 
         @Override
         public void run() {
@@ -1001,7 +1033,6 @@ public class CameraUtils {
 //                if (c2bFragment.globali++ >= 29) {
 //                    showToastStatic("artık endişeli değilim 30 foto çektik :P:D", activity);
 //                }
-
                 Image.Plane Y = mImage.getPlanes()[0];
                 Image.Plane U = mImage.getPlanes()[1];
                 Image.Plane V = mImage.getPlanes()[2];
@@ -1025,16 +1056,22 @@ public class CameraUtils {
                 Bitmap bitmap = Bitmap.createBitmap(pixels, mImageWidth, mImageHeight, Bitmap.Config.ARGB_8888);
 
 
+                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+                Bitmap orientatedBitmap = rotate(bitmap, getOrientation(rotation));
+
                 //int colorCodeAtRightBottomPixel = bitmap.getPixel((mImageWidth - 4), (mImageHeight - 4));
 
-                for (int i = 0; i <= mImageHeight - 1; ++i) {
-                    for (int a = 0; a <= mImageWidth - 1; ++a) {
-                        int colorDetect = bitmap.getPixel(a, i);
+                int orientatedBMWidth = orientatedBitmap.getWidth();
+                int orientatedBMHeight = orientatedBitmap.getHeight();
+
+                for (int i = 0; i <= orientatedBMHeight - 1; ++i) {
+                    for (int a = 0; a <= orientatedBMWidth - 1; ++a) {
+                        int colorDetect = orientatedBitmap.getPixel(a, i);
                         if (Color.red(colorDetect) > 236 ){
 
-                                pixelsmHeightSum += i;
-                                pixelsmWidthSum += a;
-                                divide++;
+                            pixelsmHeightSum += i;
+                            pixelsmWidthSum += a;
+                            divide++;
 
                         }
                     }
@@ -1045,7 +1082,7 @@ public class CameraUtils {
                     centerRedHeight = pixelsmHeightSum / divide;
                     centerRedWidth = pixelsmWidthSum / divide;
 
-                    double deviationFromCenter = abs(centerRedWidth - ((mImageWidth - 1) / 2));
+                    double deviationFromCenter = abs(centerRedWidth - ((orientatedBMWidth - 1) / 2));
 
                     double totalDeviation = 0;
                     totalDeviation += deviationFromCenter;
@@ -1053,7 +1090,7 @@ public class CameraUtils {
                     divideDev++;
 
 
-                    showToastStatic("Kırmızı noktaların merkezi:" + centerRedHeight + "," + centerRedWidth + "Merkezden sapma:" + deviationFromCenter, activity);
+                    //showToastStatic("Kırmızı noktaların merkezi:" + centerRedHeight + "," + centerRedWidth + "Merkezden sapma:" + deviationFromCenter, activity);
 
                     //showToastStatic("yeni versiyon -10 pixels dizisi length: " + pixels.length + "foto en boy: y" + mImageHeight + "x" + mImageWidth + " En sağ alt köşe pixelin rgb değeri r:"
                     //+ Color.red(colorCodeAtRightBottomPixel) + " g:" + Color.green(colorCodeAtRightBottomPixel)+ " b:"+ Color.blue(colorCodeAtRightBottomPixel), activity);
@@ -1063,70 +1100,23 @@ public class CameraUtils {
                         //showToastStatic("Merkezden Ortalama Sapma:" + totalDeviation,activity);
                     }
                 } catch (Exception e) {
-                     showToastStatic("No red light found", activity);
+                    showToastStatic("No red light found", activity);
 
                 } finally {
                     ++c2bFragment.globali;
-                    File mFile = createImageFile(activity);
-                    try (FileOutputStream out = new FileOutputStream(mFile)) {
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
-                        // PNG is a lossless format, the compression factor (100) is ignored
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+//                    File mFile = createImageFile(activity);
+//                    try (FileOutputStream out = new FileOutputStream(mFile)) {
+//                        orientatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out); // bmp is your Bitmap instance
+//                        // PNG is a lossless format, the compression factor (100) is ignored
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+                    showToastStatic("Çağırdım:" + c2bFragment.globali,activity);
+                    mImage.close();
+                    mutex.release();
                 }
 
 
-
-
-//                ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
-//                byte[] bytes = new byte[buffer.remaining()];
-//                buffer.get(bytes);
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length,null);
-
-
-//                int mWidth = mImage.getWidth();
-////                int mHeight = mImage.getHeight();
-
-                //System.out.println("video: creating bitmap");
-                //try{
-//                byte[] bits = new byte[mWidth * mHeight * 4];
-//
-//                Bitmap bitmap = Bitmap.createBitmap(mImage.getWidth(),mImage.getWidth(), Bitmap.Config.ARGB_8888);
-//                //bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(bits));
-//
-//                ByteBuffer buffer = ByteBuffer.wrap(bits);
-//                buffer.rewind();
-//
-//
-//                bitmap.copyPixelsFromBuffer(buffer);
-
-                //}catch(OutOfMemoryError ex){
-
-                //}
-                //System.out.println("video: bitmap created");
-
-
-//                mImage.getPlanes()[0].getBuffer().get(bits);
-//                mImage.close();
-//                Bitmap bitmap = BitmapFactory.decodeByteArray(rgbaBytes,0,rgbaBytes.length,null);
-
-
-//                if(bits==null)
-//                    showToastStatic("bit boş", activity);
-//                else
-//                    showToastStatic("bit dolu" , activity);
-//                if(bitmap == null)
-//                    showToastStatic("bitmap boş", activity);
-//                else
-//                    showToastStatic("bitmap dolu" , activity);
-//
-//                int pixel = bitmap.getPixel(150,120); //Burayı döngüye alıp hesaplamaları yaptırabilirsiniz
-//                int redValue = Color.red(pixel);
-//                int blueValue = Color.blue(pixel);
-//                int greenValue = Color.green(pixel);
-//                showToastStatic("cekiyor red:" + redValue + "cekiyor green:" + greenValue + "cekiyor blue:" + blueValue, activity);
-                mutex.release();
             } catch (Exception e) {
                 showToastStatic("Exception yedik", activity);
                 showToastStatic(e.getMessage(), activity);

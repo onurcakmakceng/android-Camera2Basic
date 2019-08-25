@@ -1,4 +1,4 @@
-#Thu Aug 22 19:48:31 EET 2019
-base.0=D\:\\Users\\Honour\\AndroidStudioProjects\\android-Camera2Basic-master\\Application\\build\\intermediates\\transforms\\dexMerger\\debug\\9
+#Sun Aug 25 12:45:27 EET 2019
+base.0=D\:\\Users\\Honour\\AndroidStudioProjects\\android-Camera2Basic-master\\Application\\build\\intermediates\\transforms\\dexMerger\\debug\\39
 path.0=classes.dex
 renamed.0=classes.dex
