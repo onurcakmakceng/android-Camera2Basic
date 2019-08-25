@@ -285,7 +285,7 @@ public class CameraUtils {
             switch (mState) {
                 case STATE_PREVIEW: {
                     // We have nothing to do when the camera preview is working normally.
-                    if( c2bFragment.globali % 2 == 0 && c2bFragment.globali != 0 && c2bFragment.globali < 30) {
+                    if (c2bFragment.globali % 2 == 0 && c2bFragment.globali != 0 && c2bFragment.globali < 30) {
                         Log.d("HEYOO", "GİRDİM Kİ");
                         mState = STATE_WAITING_PRECAPTURE;
                     }
@@ -294,7 +294,7 @@ public class CameraUtils {
                 }
                 case STATE_WAITING_LOCK: {
                     Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
-                    showToast(""+afState);
+                    showToast("" + afState);
                     if (afState == null) {
                         captureStillPicture();
                     } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState ||
@@ -805,7 +805,7 @@ public class CameraUtils {
                 }
             };
             List<CaptureRequest> captureList = new ArrayList<CaptureRequest>();
-            for (int i=0;i<2;i++) {
+            for (int i = 0; i < 2; i++) {
                 captureList.add(captureBuilder.build());
             }
 
@@ -888,6 +888,7 @@ public class CameraUtils {
             this.activity = activity;
         }
 
+
         /**
          * Converts YUV420 NV21 to RGB8888
          *
@@ -955,8 +956,7 @@ public class CameraUtils {
             return image;
         }
 
-        private static Bitmap rotate(Bitmap bitmap, float rotateAngle)
-        {
+        private static Bitmap rotate(Bitmap bitmap, float rotateAngle) {
 
             int width = bitmap.getWidth();
 
@@ -978,7 +978,7 @@ public class CameraUtils {
 //            matrix.postScale(scaleWidth, scaleHeight);
             matrix.postRotate(rotateAngle);
 
-            Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0,width, height, matrix, true);
+            Bitmap resizedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
 
             return resizedBitmap;
         }
@@ -1026,7 +1026,6 @@ public class CameraUtils {
 
 
 //mimage'ı imagelListe atma kodunu tekrar etkinleştirin
-
             try {
                 mutex.acquire();
 
@@ -1049,48 +1048,83 @@ public class CameraUtils {
                 V.getBuffer().get(data, Yb + Ub, Vb);
                 int mImageWidth = mImage.getWidth();
                 int mImageHeight = mImage.getHeight();
-                int pixelsmHeightSum = 0;
-                int pixelsmWidthSum = 0;
+                double pixelsmHeightSum = 0;
+                double pixelsmWidthSum = 0;
                 int divide = 0;
                 int[] pixels = convertYUV420_NV21toRGB8888(data, mImageWidth, mImageHeight);
-                Bitmap bitmap = Bitmap.createBitmap(pixels, mImageWidth, mImageHeight, Bitmap.Config.ARGB_8888);
 
+                int[][] array2D = new int[mImageHeight][mImageWidth];
+                for (int y = 0; y < mImageHeight; y++) {
+                    for (int x = 0; x < mImageWidth; x++) {
+                        int pixelsPlace = x + y * mImageWidth;
+                        array2D[y][x] = pixels[pixelsPlace];
+                    }
+                }
 
-                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-                Bitmap orientatedBitmap = rotate(bitmap, getOrientation(rotation));
+                for (int y = 0; y < mImageHeight; ++y) {
+                    for (int x = 0; x < mImageWidth; ++x) {
+                        int colorDetect = array2D[y][x];
+                        if (Color.red(colorDetect) > 236) {
 
-                //int colorCodeAtRightBottomPixel = bitmap.getPixel((mImageWidth - 4), (mImageHeight - 4));
-
-                int orientatedBMWidth = orientatedBitmap.getWidth();
-                int orientatedBMHeight = orientatedBitmap.getHeight();
-
-                for (int i = 0; i <= orientatedBMHeight - 1; ++i) {
-                    for (int a = 0; a <= orientatedBMWidth - 1; ++a) {
-                        int colorDetect = orientatedBitmap.getPixel(a, i);
-                        if (Color.red(colorDetect) > 236 ){
-
-                            pixelsmHeightSum += i;
-                            pixelsmWidthSum += a;
+                            pixelsmHeightSum += y;
+                            pixelsmWidthSum += x;
                             divide++;
 
                         }
                     }
                 }
-                double centerRedHeight = 0;
-                double centerRedWidth = 0;
-                try {
-                    centerRedHeight = pixelsmHeightSum / divide;
-                    centerRedWidth = pixelsmWidthSum / divide;
 
-                    double deviationFromCenter = abs(centerRedWidth - ((orientatedBMWidth - 1) / 2));
+
+//                Bitmap bitmap = Bitmap.createBitmap(pixels, mImageWidth, mImageHeight, Bitmap.Config.ARGB_8888);
+//
+//
+//                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
+//                Bitmap orientatedBitmap = rotate(bitmap, getOrientation(rotation));
+
+                //int colorCodeAtRightBottomPixel = bitmap.getPixel((mImageWidth - 4), (mImageHeight - 4));
+
+//                int orientatedBMWidth = orientatedBitmap.getWidth();
+//                int orientatedBMHeight = orientatedBitmap.getHeight();
+
+//                for (int i = 0; i <= orientatedBMHeight - 1; ++i) {
+//                    for (int a = 0; a <= orientatedBMWidth - 1; ++a) {
+//                        int colorDetect = orientatedBitmap.getPixel(a, i);
+//                        if (Color.red(colorDetect) > 236 ){
+//
+//                            pixelsmHeightSum += i;
+//                            pixelsmWidthSum += a;
+//                            divide++;
+//
+//                        }
+//                    }
+////             }
+//                double centerRedHeight = 0;
+//                double centerRedWidth = 0;
+                try {
+//                    centerRedHeight = pixelsmHeightSum / divide;
+//                    centerRedWidth = pixelsmWidthSum / divide;
+//
+//                    double deviationFromCenter = abs(centerRedWidth - ((orientatedBMWidth - 1) / 2));
+//
+//                    double totalDeviation = 0;
+//                    totalDeviation += deviationFromCenter;
+//                    int divideDev = 0;
+//                    divideDev++;
+
+
+                    //showToastStatic("Kırmızı noktaların merkezi:" + centerRedHeight + "," + centerRedWidth + "Merkezden sapma:" + deviationFromCenter, activity);
+
+
+                    double centerRedHeight = pixelsmHeightSum / divide;
+                    double centerRedWidth = pixelsmWidthSum / divide;
+
+                    double deviationFromCenter = abs(centerRedWidth - (mImageWidth - 1) / 2.0 );
 
                     double totalDeviation = 0;
                     totalDeviation += deviationFromCenter;
                     int divideDev = 0;
                     divideDev++;
-
-
-                    //showToastStatic("Kırmızı noktaların merkezi:" + centerRedHeight + "," + centerRedWidth + "Merkezden sapma:" + deviationFromCenter, activity);
+                    showToastStatic("Kırmızı noktaların merkezi:" + centerRedHeight + "," + centerRedWidth + "Merkezden sapma:" + deviationFromCenter, activity);
 
                     //showToastStatic("yeni versiyon -10 pixels dizisi length: " + pixels.length + "foto en boy: y" + mImageHeight + "x" + mImageWidth + " En sağ alt köşe pixelin rgb değeri r:"
                     //+ Color.red(colorCodeAtRightBottomPixel) + " g:" + Color.green(colorCodeAtRightBottomPixel)+ " b:"+ Color.blue(colorCodeAtRightBottomPixel), activity);
@@ -1101,7 +1135,6 @@ public class CameraUtils {
                     }
                 } catch (Exception e) {
                     showToastStatic("No red light found", activity);
-
                 } finally {
                     ++c2bFragment.globali;
 //                    File mFile = createImageFile(activity);
@@ -1111,119 +1144,118 @@ public class CameraUtils {
 //                    } catch (IOException e) {
 //                        e.printStackTrace();
 //                    }
-                    showToastStatic("Çağırdım:" + c2bFragment.globali,activity);
+                    //showToastStatic("Çağırdım:" + c2bFragment.globali, activity);
                     mImage.close();
                     mutex.release();
                 }
-
-
             } catch (Exception e) {
                 showToastStatic("Exception yedik", activity);
                 showToastStatic(e.getMessage(), activity);
             }
-
-
-            //Burdaki kodlar bittikten sonra bu fonksiyonun adını değiştir, save fonksiyonu yerine çekilen fotoları işleme fonksiyonu olsun
         }
-
     }
 
-    /**
-     * Compares two {@code Size}s based on their areas.
-     */
-    static class CompareSizesByArea implements Comparator<Size> {
 
-        @Override
-        public int compare(Size lhs, Size rhs) {
-            // We cast here to ensure the multiplications won't overflow
-            return Long.signum((long) lhs.getWidth() * lhs.getHeight() -
-                    (long) rhs.getWidth() * rhs.getHeight());
+        //Burdaki kodlar bittikten sonra bu fonksiyonun adını değiştir, save fonksiyonu yerine çekilen fotoları işleme fonksiyonu olsun
+
+
+        /**
+         * Compares two {@code Size}s based on their areas.
+         */
+        static class CompareSizesByArea implements Comparator<Size> {
+
+            @Override
+            public int compare(Size lhs, Size rhs) {
+                // We cast here to ensure the multiplications won't overflow
+                return Long.signum((long) lhs.getWidth() * lhs.getHeight() -
+                        (long) rhs.getWidth() * rhs.getHeight());
+            }
+
         }
 
-    }
+        /**
+         * Shows an error message dialog.
+         */
+        public static class ErrorDialog extends DialogFragment {
 
-    /**
-     * Shows an error message dialog.
-     */
-    public static class ErrorDialog extends DialogFragment {
+            private static final String ARG_MESSAGE = "message";
 
-        private static final String ARG_MESSAGE = "message";
+            public static CameraUtils.ErrorDialog newInstance(String message) {
+                CameraUtils.ErrorDialog dialog = new CameraUtils.ErrorDialog();
+                Bundle args = new Bundle();
+                args.putString(ARG_MESSAGE, message);
+                dialog.setArguments(args);
+                return dialog;
+            }
 
-        public static CameraUtils.ErrorDialog newInstance(String message) {
-            CameraUtils.ErrorDialog dialog = new CameraUtils.ErrorDialog();
-            Bundle args = new Bundle();
-            args.putString(ARG_MESSAGE, message);
-            dialog.setArguments(args);
-            return dialog;
+            @NonNull
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                final Activity activity = getActivity();
+                return new AlertDialog.Builder(activity)
+                        .setMessage(getArguments().getString(ARG_MESSAGE))
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                activity.finish();
+                            }
+                        })
+                        .create();
+            }
+
         }
 
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final Activity activity = getActivity();
-            return new AlertDialog.Builder(activity)
-                    .setMessage(getArguments().getString(ARG_MESSAGE))
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            activity.finish();
-                        }
-                    })
-                    .create();
-        }
+        /**
+         * Shows OK/Cancel confirmation dialog about camera permission.
+         */
+        public static class ConfirmationDialog extends DialogFragment {
 
-    }
-
-    /**
-     * Shows OK/Cancel confirmation dialog about camera permission.
-     */
-    public static class ConfirmationDialog extends DialogFragment {
-
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final Fragment parent = getParentFragment();
-            return new AlertDialog.Builder(getActivity())
-                    .setMessage(R.string.request_permission)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            parent.requestPermissions(new String[]{Manifest.permission.CAMERA},
-                                    REQUEST_CAMERA_PERMISSION);
-                        }
-                    })
-                    .setNegativeButton(android.R.string.cancel,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Activity activity = parent.getActivity();
-                                    if (activity != null) {
-                                        activity.finish();
+            @NonNull
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                final Fragment parent = getParentFragment();
+                return new AlertDialog.Builder(getActivity())
+                        .setMessage(R.string.request_permission)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                parent.requestPermissions(new String[]{Manifest.permission.CAMERA},
+                                        REQUEST_CAMERA_PERMISSION);
+                            }
+                        })
+                        .setNegativeButton(android.R.string.cancel,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Activity activity = parent.getActivity();
+                                        if (activity != null) {
+                                            activity.finish();
+                                        }
                                     }
-                                }
-                            })
-                    .create();
+                                })
+                        .create();
+            }
         }
-    }
-
-    @SuppressLint("ValidFragment")
-    public static class InformationDialog extends DialogFragment {
-
-        public String infoMessage;
 
         @SuppressLint("ValidFragment")
-        public InformationDialog(String infoMessage) {
-            this.infoMessage = infoMessage;
-        }
+        public static class InformationDialog extends DialogFragment {
 
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            final Fragment parent = getParentFragment();
-            return new AlertDialog.Builder(getActivity())
-                    .setMessage(infoMessage)
-                    .setPositiveButton(android.R.string.ok, null)
-                    .create();
+            public String infoMessage;
+
+            @SuppressLint("ValidFragment")
+            public InformationDialog(String infoMessage) {
+                this.infoMessage = infoMessage;
+            }
+
+            @NonNull
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                final Fragment parent = getParentFragment();
+                return new AlertDialog.Builder(getActivity())
+                        .setMessage(infoMessage)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .create();
+            }
         }
     }
-}
+
