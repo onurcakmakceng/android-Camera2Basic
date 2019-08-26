@@ -18,7 +18,7 @@
     package="com.example.android.camera2basic" >
 
     <uses-sdk
-        android:minSdkVersion="21"
+        android:minSdkVersion="23"
         android:targetSdkVersion="27" />
 
     <uses-permission android:name="android.permission.CAMERA" />
