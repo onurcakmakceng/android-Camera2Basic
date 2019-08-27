@@ -1177,7 +1177,6 @@ public class CameraUtils {
 
                     double centerRedHeight = pixelsmHeightSum / divide;
                     double centerRedWidth = pixelsmWidthSum / divide;
-                    //@TODO Burda bi sıkıntı ytok gibi görünüyo ama istediğimiz gibi çalışmıyo gibi de. O yüzden bi bakılcak
                     double deviationFromCenter = abs(centerRedWidth - (mImageWidth - 1) / 2.0 );
 
                     totalDeviation += deviationFromCenter;
