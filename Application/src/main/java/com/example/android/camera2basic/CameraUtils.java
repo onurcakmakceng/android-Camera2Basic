@@ -1197,6 +1197,8 @@ public class CameraUtils {
                         new CameraUtils.InformationDialog("Merkezden Ortalama Sapma:" + totalDeviation).show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
                         //showToastStatic("Merkezden Ortalama Sapma:" + totalDeviation,activity);
                         c2bFragment.globali = -1;
+                        totalDeviation = 0;
+                        divideDev = 0;
                     }
                     ++c2bFragment.globali;
                     //bitmape cast ederek sonra jpeg kaydederken bi sıkıntısı var widthi 1526dan 1200e indiriyo kırpıyo
