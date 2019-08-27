@@ -1197,6 +1197,7 @@ public class CameraUtils {
                         //@TODO: bu show log olcak ve bu açının değeri yazcak, bu açıdaki sapma yazcak ve o ana kadarki tüm açıların en az deviationlısının değerini de yaz
                         new CameraUtils.InformationDialog("Merkezden Ortalama Sapma:" + totalDeviation).show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
                         //showToastStatic("Merkezden Ortalama Sapma:" + totalDeviation,activity);
+                        c2bFragment.globali = -1;
                     }
                     ++c2bFragment.globali;
                     //bitmape cast ederek sonra jpeg kaydederken bi sıkıntısı var widthi 1526dan 1200e indiriyo kırpıyo
