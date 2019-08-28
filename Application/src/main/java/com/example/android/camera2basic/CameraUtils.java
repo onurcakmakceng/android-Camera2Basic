@@ -65,6 +65,8 @@ public class CameraUtils {
         this.c2bFragment = c2bFragment;
     }
 
+    public static int takenPictureOnOneAngle = 0;
+
     private Activity activity;
 
     private Camera2BasicFragment c2bFragment;
@@ -283,7 +285,7 @@ public class CameraUtils {
             switch (mState) {
                 case STATE_PREVIEW: {
                     // We have nothing to do when the camera preview is working normally.
-                    if (c2bFragment.globali % 2 == 0 && c2bFragment.globali != 0 && c2bFragment.globali < 30) {
+                    if (takenPictureOnOneAngle % 2 == 0 && takenPictureOnOneAngle != 0 && takenPictureOnOneAngle < 30) {
                         Log.d("HEYOO", "GİRDİM Kİ");
                         mState = STATE_WAITING_PRECAPTURE;
                     }
@@ -292,7 +294,7 @@ public class CameraUtils {
                 }
                 case STATE_WAITING_LOCK: {
                     Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
-                    showToast("" + afState);
+                    // For debug afstate showToast("" + afState);
                     if (afState == null) {
                         captureStillPicture();
                     } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState ||
@@ -661,7 +663,7 @@ public class CameraUtils {
                                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
                                 // Flash is automatically enabled when necessary.
                                 //setAutoFlash(mPreviewRequestBuilder);
-                                mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
+
 
                                 // Finally, we start displaying the camera preview.
                                 mPreviewRequest = mPreviewRequestBuilder.build();
@@ -785,7 +787,7 @@ public class CameraUtils {
             captureBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                     CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
             //setAutoFlash(captureBuilder);
-            captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
+
 
             // Orientation
 //            int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
@@ -842,7 +844,7 @@ public class CameraUtils {
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
                     CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
             //setAutoFlash(mPreviewRequestBuilder);
-            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
+
             mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
                     mBackgroundHandler);
             // After this, the camera will go back to the normal state of preview.
@@ -998,55 +1000,14 @@ public class CameraUtils {
 
         @Override
         public void run() {
-//showToastStatic("lölölölö", activity);
-//            byte[] bytes = new byte[buffer.remaining()];
-//            buffer.get(bytes);
-//            FileOutputStream output = null;
-//            try {
-//                output = new FileOutputStream(mFile);
-//                output.write(bytes);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } finally {
-//                mImage.close();
-//                if (null != output) {
-//                    try {
-//                        output.close();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                if(c2bFragment.globali < 20) {
-//                    c2bFragment.onClick(c2bFragment.getView());
-//                    ++c2bFragment.globali;
-//                }
-//                else
-//                    c2bFragment.globali = 0;
-//            }
-
-//            if(c2bFragment.globali < 19) {
-////                imageList.add(mImage);
-//                ++c2bFragment.globali;
-//                Log.d(TAG, "çekiyor");
-//                c2bFragment.onClick(c2bFragment.getView());
-//            }
-//            else {
-//                c2bFragment.globali = 0;
-//                Log.d(TAG, "ahanda yirmili bitti");
-//                //hesaplama kodları buraya gelcek 20 foto olunca
-////                imageList = new ArrayList<>();
-//            }
-
-
-//mimage'ı imagelListe atma kodunu tekrar etkinleştirin
             try {
+                // Mutex for lock. This lock mechanism is recommended to avoid collusions (Thread Safety)
                 mutex.acquire();
 
-//                if (c2bFragment.globali++ >= 29) {
-//                    showToastStatic("artık endişeli değilim 30 foto çektik :P:D", activity);
-//                }
-
-                //TODO: direk rgb formatında çekebiliyo musun ona bak, burdaki yuv dönüşümleri de zaman alıyo ve green kaydetme sorunu var dönüşüm sonrası
+                //---------------------------------------
+                // 1) Transform YUV to RGB Pixels one Dimensional Array:
+                //      Taken mImage is in YUV Format
+                //      We need to transform RGB format
                 Image.Plane Y = mImage.getPlanes()[0];
                 Image.Plane U = mImage.getPlanes()[1];
                 Image.Plane V = mImage.getPlanes()[2];
@@ -1066,8 +1027,14 @@ public class CameraUtils {
                 double pixelsmHeightSum = 0;
                 double pixelsmWidthSum = 0;
                 int divide = 0;
-                int[] pixels = convertYUV420_NV21toRGB8888(data, mImageWidth, mImageHeight);
 
+                int[] pixels = convertYUV420_NV21toRGB8888(data, mImageWidth, mImageHeight);
+                //---------------------------------------
+
+
+                //---------------------------------------
+                // 2) Transform to 2D Array:
+                //      Our pixels RGB array is one dimensional. Transform this to 2 dimensional
                 int[][] array2D = new int[mImageHeight][mImageWidth];
                 for (int y = 0; y < mImageHeight; y++) {
                     for (int x = 0; x < mImageWidth; x++) {
@@ -1075,31 +1042,11 @@ public class CameraUtils {
                         array2D[y][x] = pixels[pixelsPlace];
                     }
                 }
-
-//                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-//
-//                int temp = 0;
-//                switch (getOrientation(rotation) ) {
-//                    case 180:
-//                        temp = mImageWidth;
-//                        mImageWidth = mImageHeight;
-//                        mImageHeight = temp;
-//                        array2D = rotateMatrix90Clockwise(array2D);
-//                    case 90:
-//                        temp = mImageWidth;
-//                        mImageWidth = mImageHeight;
-//                        mImageHeight = temp;
-//                        array2D = rotateMatrix90Clockwise(array2D);
-//                        break;
-//                    case 270:
-//                        temp = mImageWidth;
-//                        mImageWidth = mImageHeight;
-//                        mImageHeight = temp;
-//                        array2D = rotateMatrix90CounterClockwise(array2D);
-//                        break;
-//                };
+                //---------------------------------------
 
 
+                //---------------------------------------
+                // 3) Detect RED pixels:
                 for (int y = 0; y < mImageHeight; ++y) {
                     for (int x = 0; x < mImageWidth; ++x) {
                         int colorDetect = array2D[y][x];
@@ -1112,10 +1059,16 @@ public class CameraUtils {
                         }
                     }
                 }
+                //---------------------------------------
 
+                // This line for image saving into storage (For Debug Exceptions and Unexpected Situations)
                 //Bitmap bitmap = Bitmap.createBitmap(pixels, mImageWidth, mImageHeight, Bitmap.Config.ARGB_8888);
 
-                // For orientation is 90 or 270, switch width-height calculations
+                //---------------------------------------
+                // 4) Fake Rotate If Its Needed:
+                //      If the phone is in Landscape mode (not Portrait mode) we need to rotate (For orientation is 90 or 270)
+                //      But we DID NOT ROTATE THE ORIGINAL
+                //      Just switch width-height calculations results (All we Need)
                 double temp1 = 0;
                 int temp2 = 0;
                 if (orientationAngle == 90 || orientationAngle == 270) {
@@ -1127,80 +1080,39 @@ public class CameraUtils {
                     mImageWidth = mImageHeight;
                     pixelsmHeightSum = temp2;
                 }
+                //---------------------------------------
 
-//                for (int y = 0; y < mImageHeight; y++) {
-//                    for (int x = 0; x < mImageWidth; x++) {
-//                        int pixelsPlace = x + y * mImageWidth;
-//                        pixels[pixelsPlace] = array2D[y][x];
-//                    }
-//                }
-//
-
-//
-//
-//                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-//                Bitmap orientatedBitmap = rotate(bitmap, getOrientation(rotation));
-
-                //int colorCodeAtRightBottomPixel = bitmap.getPixel((mImageWidth - 4), (mImageHeight - 4));
-
-//                int orientatedBMWidth = orientatedBitmap.getWidth();
-//                int orientatedBMHeight = orientatedBitmap.getHeight();
-
-//                for (int i = 0; i <= orientatedBMHeight - 1; ++i) {
-//                    for (int a = 0; a <= orientatedBMWidth - 1; ++a) {
-//                        int colorDetect = orientatedBitmap.getPixel(a, i);
-//                        if (Color.red(colorDetect) > 236 ){
-//
-//                            pixelsmHeightSum += i;
-//                            pixelsmWidthSum += a;
-//                            divide++;
-//
-//                        }
-//                    }
-////             }
-//                double centerRedHeight = 0;
-//                double centerRedWidth = 0;
+                //---------------------------------------
+                //
                 try {
-//                    centerRedHeight = pixelsmHeightSum / divide;
-//                    centerRedWidth = pixelsmWidthSum / divide;
-//
-//                    double deviationFromCenter = abs(centerRedWidth - ((orientatedBMWidth - 1) / 2));
-//
-//                    double totalDeviation = 0;
-//                    totalDeviation += deviationFromCenter;
-//                    int divideDev = 0;
-//                    divideDev++;
+                    if(pixelsmHeightSum != 0 || divide != 0) {
+                        double centerRedHeight = pixelsmHeightSum / divide;
+                        double centerRedWidth = pixelsmWidthSum / divide;
+                        double deviationFromCenter = abs(centerRedWidth - (mImageWidth - 1) / 2.0 );
 
+                        totalDeviation += deviationFromCenter;
+                        divideDev++;
 
-                    //showToastStatic("Kırmızı noktaların merkezi:" + centerRedHeight + "," + centerRedWidth + "Merkezden sapma:" + deviationFromCenter, activity);
-
-
-                    double centerRedHeight = pixelsmHeightSum / divide;
-                    double centerRedWidth = pixelsmWidthSum / divide;
-                    double deviationFromCenter = abs(centerRedWidth - (mImageWidth - 1) / 2.0 );
-
-                    totalDeviation += deviationFromCenter;
-                    divideDev++;
-
-                    showToastStatic("Kırmızı noktaların merkezi:" + centerRedHeight + "," + centerRedWidth + "Merkezden sapma:" + deviationFromCenter, activity);
-
-                    //showToastStatic("yeni versiyon -10 pixels dizisi length: " + pixels.length + "foto en boy: y" + mImageHeight + "x" + mImageWidth + " En sağ alt köşe pixelin rgb değeri r:"
-                    //+ Color.red(colorCodeAtRightBottomPixel) + " g:" + Color.green(colorCodeAtRightBottomPixel)+ " b:"+ Color.blue(colorCodeAtRightBottomPixel), activity);
-
+                        showToastStatic("Red Dot Deviation from Horizontal Center:" + deviationFromCenter + "pixel" + "   (Total Width" + mImageWidth + " pixel)", activity);
+                    } else {
+                        showToastStatic("No red light found", activity);
+                    }
                 } catch (Exception e) {
                     showToastStatic("No red light found", activity);
                 } finally {
-                    if (c2bFragment.globali >= 29 && divideDev != 0) {
+                    if (takenPictureOnOneAngle >= 29 && divideDev != 0) {
 
                         totalDeviation /= divideDev;
                         //@TODO: bu show log olcak ve bu açının değeri yazcak, bu açıdaki sapma yazcak ve o ana kadarki tüm açıların en az deviationlısının değerini de yaz
-                        new CameraUtils.InformationDialog("Merkezden Ortalama Sapma:" + totalDeviation).show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
-                        //showToastStatic("Merkezden Ortalama Sapma:" + totalDeviation,activity);
-                        c2bFragment.globali = -1;
+                        new CameraUtils.InformationDialog("Red Dot Deviation from Horizontal Center:" + totalDeviation + "pixel" + "   (Total Width" + mImageWidth + " pixel)")
+                                .show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
+
+                        // Reset
+                        takenPictureOnOneAngle = -1;
                         totalDeviation = 0;
                         divideDev = 0;
                     }
-                    ++c2bFragment.globali;
+                    ++takenPictureOnOneAngle;
                     //bitmape cast ederek sonra jpeg kaydederken bi sıkıntısı var widthi 1526dan 1200e indiriyo kırpıyo
 //                    File mFile = createImageFile(activity);
 //                    try (FileOutputStream out = new FileOutputStream(mFile)) {
