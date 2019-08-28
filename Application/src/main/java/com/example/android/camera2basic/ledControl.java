@@ -22,7 +22,7 @@ import java.util.UUID;
 
 public class ledControl extends AppCompatActivity {
 
-    Button btnOn, btnOff, btnDis;
+    Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btnDis;
     SeekBar brightness;
     TextView lumn;
     String address = null;
@@ -45,31 +45,95 @@ public class ledControl extends AppCompatActivity {
         setContentView(R.layout.activity_led_control);
 
         //call the widgtes
-        btnOn = (Button)findViewById(R.id.button2);
-        btnOff = (Button)findViewById(R.id.button3);
+        btn1 = (Button)findViewById(R.id.button11);
+        btn2 = (Button)findViewById(R.id.button12);
+        btn3 = (Button)findViewById(R.id.button13);
+        btn4 = (Button)findViewById(R.id.button14);
+        btn5 = (Button)findViewById(R.id.button15);
+        btn6 = (Button)findViewById(R.id.button16);
+        btn7 = (Button)findViewById(R.id.button17);
+        btn8 = (Button)findViewById(R.id.button18);
+        btn9 = (Button)findViewById(R.id.button19);
         btnDis = (Button)findViewById(R.id.button4);
         brightness = (SeekBar)findViewById(R.id.seekBar);
-        lumn = (TextView)findViewById(R.id.lumn);
+        //lumn = (TextView)findViewById(R.id.lumn);
 
         new ConnectBT().execute(); //Call the class to connect
 
         //commands to be sent to bluetooth
-        btnOn.setOnClickListener(new View.OnClickListener()
+        btn1.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                turnOnLed();      //method to turn on
+                Message1();      //method to turn on
             }
         });
 
-        btnOff.setOnClickListener(new View.OnClickListener() {
+        btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
-                turnOffLed();   //method to turn off
+                Message2();   //method to turn off
             }
         });
+        btn3.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Message3();      //method to turn on
+            }
+        });
+        btn4.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Message4();      //method to turn on
+            }
+        });
+        btn5.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Message5();      //method to turn on
+            }
+        });
+        btn6.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Message6();      //method to turn on
+            }
+        });
+        btn7.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Message7();      //method to turn on
+            }
+        });
+        btn8.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Message8();      //method to turn on
+            }
+        });
+        btn9.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Message9();      //method to turn on
+            }
+        });
+
 
         btnDis.setOnClickListener(new View.OnClickListener()
         {
@@ -124,13 +188,15 @@ public class ledControl extends AppCompatActivity {
 
     }
 
-    private void turnOffLed()
+
+
+    private void Message1()
     {
         if (btSocket!=null)
         {
             try
             {
-                btSocket.getOutputStream().write("TF".toString().getBytes());
+                btSocket.getOutputStream().write("1".toString().getBytes());
             }
             catch (IOException e)
             {
@@ -138,14 +204,111 @@ public class ledControl extends AppCompatActivity {
             }
         }
     }
-
-    private void turnOnLed()
+    private void Message2()
     {
         if (btSocket!=null)
         {
             try
             {
-                btSocket.getOutputStream().write("TO".toString().getBytes());
+                btSocket.getOutputStream().write("2".toString().getBytes());
+            }
+            catch (IOException e)
+            {
+                msg("Error");
+            }
+        }
+    }
+    private void Message3()
+    {
+        if (btSocket!=null)
+        {
+            try
+            {
+                btSocket.getOutputStream().write("3".toString().getBytes());
+            }
+            catch (IOException e)
+            {
+                msg("Error");
+            }
+        }
+    }
+    private void Message4()
+    {
+        if (btSocket!=null)
+        {
+            try
+            {
+                btSocket.getOutputStream().write("4".toString().getBytes());
+            }
+            catch (IOException e)
+            {
+                msg("Error");
+            }
+        }
+    }
+    private void Message5()
+    {
+        if (btSocket!=null)
+        {
+            try
+            {
+                btSocket.getOutputStream().write("5".toString().getBytes());
+            }
+            catch (IOException e)
+            {
+                msg("Error");
+            }
+        }
+    }
+    private void Message6()
+    {
+        if (btSocket!=null)
+        {
+            try
+            {
+                btSocket.getOutputStream().write("6".toString().getBytes());
+            }
+            catch (IOException e)
+            {
+                msg("Error");
+            }
+        }
+    }
+    private void Message7()
+    {
+        if (btSocket!=null)
+        {
+            try
+            {
+                btSocket.getOutputStream().write("7".toString().getBytes());
+            }
+            catch (IOException e)
+            {
+                msg("Error");
+            }
+        }
+    }
+    private void Message8()
+    {
+        if (btSocket!=null)
+        {
+            try
+            {
+                btSocket.getOutputStream().write("8".toString().getBytes());
+            }
+            catch (IOException e)
+            {
+                msg("Error");
+            }
+        }
+    }
+    private void Message9()
+    {
+        if (btSocket!=null)
+        {
+            try
+            {
+                btSocket.getOutputStream().write("9".toString().getBytes());
             }
             catch (IOException e)
             {
