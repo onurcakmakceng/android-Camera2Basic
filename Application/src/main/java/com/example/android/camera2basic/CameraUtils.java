@@ -65,7 +65,9 @@ public class CameraUtils {
         this.c2bFragment = c2bFragment;
     }
 
-    public static int takenPictureOnOneAngle = 0;
+    private static int takenPictureOnOneAngle = 0;
+    private static double totalDeviation = 0.0;
+    private static int divideDev = 0;
 
     private Activity activity;
 
@@ -286,7 +288,6 @@ public class CameraUtils {
                 case STATE_PREVIEW: {
                     // We have nothing to do when the camera preview is working normally.
                     if (takenPictureOnOneAngle % 2 == 0 && takenPictureOnOneAngle != 0 && takenPictureOnOneAngle < 30) {
-                        Log.d("HEYOO", "GİRDİM Kİ");
                         mState = STATE_WAITING_PRECAPTURE;
                     }
                     // 30 burst  yaparken STATE_WAITING_PRECAPTURE stateine düşür, 30lu bitince açı değiştirip yeni 30luyu çekerken STATE_WAITING_LOCK buna düşür tekrar focus ayarlayıp öyle çeksin
@@ -882,9 +883,6 @@ public class CameraUtils {
 
         private Camera2BasicFragment c2bFragment;
 
-        double totalDeviation = 0;
-        int divideDev = 0;
-
         ImageSaver(Image image, Camera2BasicFragment c2bFragment, Activity activity) {
             mImage = image;
 //            mFile = file;
@@ -1024,8 +1022,8 @@ public class CameraUtils {
                 V.getBuffer().get(data, Yb + Ub, Vb);
                 int mImageWidth = mImage.getWidth();
                 int mImageHeight = mImage.getHeight();
-                double pixelsmHeightSum = 0;
-                double pixelsmWidthSum = 0;
+                double pixelsmHeightSum = 0.0;
+                double pixelsmWidthSum = 0.0;
                 int divide = 0;
 
                 int[] pixels = convertYUV420_NV21toRGB8888(data, mImageWidth, mImageHeight);
@@ -1085,11 +1083,12 @@ public class CameraUtils {
                 //---------------------------------------
                 //
                 try {
-                    if(pixelsmHeightSum != 0 || divide != 0) {
+                    if(divide != 0) {
                         double centerRedHeight = pixelsmHeightSum / divide;
                         double centerRedWidth = pixelsmWidthSum / divide;
                         double deviationFromCenter = abs(centerRedWidth - (mImageWidth - 1) / 2.0 );
 
+                        deviationFromCenter = Math.round(deviationFromCenter * 100) / 100.0;
                         totalDeviation += deviationFromCenter;
                         divideDev++;
 
@@ -1100,12 +1099,15 @@ public class CameraUtils {
                 } catch (Exception e) {
                     showToastStatic("No red light found", activity);
                 } finally {
-                    if (takenPictureOnOneAngle >= 29 && divideDev != 0) {
+                    if (takenPictureOnOneAngle >= 29) {
 
-                        totalDeviation /= divideDev;
-                        //@TODO: bu show log olcak ve bu açının değeri yazcak, bu açıdaki sapma yazcak ve o ana kadarki tüm açıların en az deviationlısının değerini de yaz
-                        new CameraUtils.InformationDialog("Red Dot Deviation from Horizontal Center:" + totalDeviation + "pixel" + "   (Total Width" + mImageWidth + " pixel)")
-                                .show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
+                        if(divideDev != 0) {
+                            totalDeviation /= divideDev;
+                            totalDeviation = Math.round(totalDeviation * 100) / 100.0;
+                            //@TODO: bu show log olcak ve bu açının değeri yazcak, bu açıdaki sapma yazcak ve o ana kadarki tüm açıların en az deviationlısının değerini de yaz
+                            new CameraUtils.InformationDialog("Red Dot Deviation from Horizontal Center:" + totalDeviation + "pixel" + "   (Total Width" + mImageWidth + " pixel)")
+                                    .show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
+                        }
 
                         // Reset
                         takenPictureOnOneAngle = -1;

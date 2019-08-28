@@ -1,6 +1,8 @@
 -- Merging decision tree log ---
 manifest
 ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:18:1-55:12
+INJECTED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:18:1-55:12
+INJECTED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:18:1-55:12
 MERGED from [com.android.support:support-v13:27.0.2] C:\Users\Honour\.gradle\caches\transforms-2\files-2.1\aaac415b4f3fc935089812a1735faa2d\AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:support-v4:27.0.2] C:\Users\Honour\.gradle\caches\transforms-2\files-2.1\9304432c870a3836cf75f991ff571290\AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:cardview-v7:27.0.2] C:\Users\Honour\.gradle\caches\transforms-2\files-2.1\7d5dc6d7d99a697c2b25ef25711cdee3\AndroidManifest.xml:17:1-22:12
@@ -13,8 +15,18 @@ MERGED from [com.android.support:support-core-ui:27.0.2] C:\Users\Honour\.gradle
 MERGED from [com.android.support:support-vector-drawable:27.0.2] C:\Users\Honour\.gradle\caches\transforms-2\files-2.1\4e011e3999bf60178490407c8c939eb9\AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:support-compat:27.0.2] C:\Users\Honour\.gradle\caches\transforms-2\files-2.1\3dcc5bc6e61569610c981caebc9d604f\AndroidManifest.xml:17:1-22:12
 MERGED from [android.arch.lifecycle:runtime:1.0.3] C:\Users\Honour\.gradle\caches\transforms-2\files-2.1\947f3ecb05c19fa2500e3687d2a272be\AndroidManifest.xml:17:1-24:12
+INJECTED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:18:1-55:12
+INJECTED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:18:1-55:12
 	package
 		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:19:5-47
+	android:versionName
+		INJECTED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml
+		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:18:1-55:12
+		INJECTED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml
+		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:18:1-55:12
+		INJECTED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:18:11-69
 uses-permission#android.permission.CAMERA
