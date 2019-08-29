@@ -77,6 +77,8 @@ public class CameraUtils {
 
     private double minDeviationOfAllAngles = 0;
 
+    static boolean photoMutex = false;
+
     private static int orientationAngle = 0;
 
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
@@ -96,6 +98,8 @@ public class CameraUtils {
 
 
     static double minAngle = 0.0;
+
+    static boolean photoTaken = false;
     /**
      * Tag for the {@link Log}.
      */
@@ -164,6 +168,8 @@ public class CameraUtils {
      * ID of the current {@link CameraDevice}.
      */
     private String mCameraId;
+
+
 
     /**
      * An {@link AutoFitTextureView} for camera preview.
@@ -300,8 +306,71 @@ public class CameraUtils {
 
 
                     // If it is in angle period
-                    if(takenPictureOnOneAngle == 0 && motorAngle > 31.5 && motorAngle <= 50) {
+                    if(takenPictureOnOneAngle == 0 && motorAngle >= 31.5 && motorAngle < 50 && photoMutex == true) {
                         //---------- Açı değişecek burda
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            c2bFragment.msg("Error");
+                        }
+
+                        if (motorAngle<=38){
+                            if (c2bFragment.btSocket!=null)
+                        {
+                            try
+                            {
+                                c2bFragment.btSocket.getOutputStream().write("4".toString().getBytes());
+                                motorAngle=motorAngle+0.45;
+                            }
+                            catch (IOException e)
+                            {
+                                c2bFragment.msg("Error");
+                            }
+                        }
+                        }
+                        if (motorAngle>38.0&& motorAngle<=40.0){
+                            if (c2bFragment.btSocket!=null)
+                            {
+                                try
+                                {
+                                    c2bFragment.btSocket.getOutputStream().write("5".toString().getBytes());
+                                    motorAngle=motorAngle+0.225;
+                                }
+                                catch (IOException e)
+                                {
+                                    c2bFragment.msg("Error");
+                                }
+                            }
+                        }
+                        if (motorAngle>40.0&& motorAngle<=46.0){
+                            if (c2bFragment.btSocket!=null)
+                            {
+                                try
+                                {
+                                    c2bFragment.btSocket.getOutputStream().write("6".toString().getBytes());
+                                    motorAngle=motorAngle+0.1225;
+                                }
+                                catch (IOException e)
+                                {
+                                    c2bFragment.msg("Error");
+                                }
+                            }
+                        }
+                        if (motorAngle>46.0){
+                            if (c2bFragment.btSocket!=null)
+                            {
+                                try
+                                {
+                                    c2bFragment.btSocket.getOutputStream().write("4".toString().getBytes());
+                                    motorAngle=motorAngle+0.45;
+                                }
+                                catch (IOException e)
+                                {
+                                    c2bFragment.msg("Error");
+                                }
+                            }
+                        }
+
 
                         //TODO: Ara işlem kısmı
                         //                    if ang<=38.0:
@@ -318,30 +387,13 @@ public class CameraUtils {
                         //                    ang=ang+0.45
                         //                    time.sleep(1)
                         //TODO: DELAY Bu Şekilde Ekleniyor 3000 ms= 3 sn
-                        try {
-                            Thread.sleep(1500);
-                        } catch (InterruptedException e) {
-                            c2bFragment.msg("Error");
-                        }
-                        if (c2bFragment.btSocket!=null)
-                        {
-                            try
-                            {
-                                c2bFragment.btSocket.getOutputStream().write("4".toString().getBytes());
-                            }
-                            catch (IOException e)
-                            {
-                                c2bFragment.msg("Error");
-                            }
-                        }
+
+
                         //----------------
                         mState = STATE_WAITING_PRECAPTURE;
                         // 30 burst  yaparken STATE_WAITING_PRECAPTURE stateine düşür, 30lu bitince açı değiştirip yeni 30luyu çekerken STATE_WAITING_LOCK buna düşür tekrar focus ayarlayıp öyle çeksin
                     } else if(motorAngle >= 50) {
                         //TODO: Bitiş kısmı
-//                        print("minimum angle of deviation",minang)
-//                        print("measured refractive index",2 * math.sin(minang * 0.0174533))
-//
 //                        ser.write(bytes('7', 'utf-8'))
 //                        time.sleep(3)
 //                        print("Turned to zero position")
@@ -352,11 +404,66 @@ public class CameraUtils {
 //                        print("turned off")
                         //TODO:
                         motorAngle = 31.5;
+                        photoTaken = false;
 
                         //print("minimum angle of deviation",minang)
                         //print("measured refractive index",2 * math.sin(minang * 0.0174533))
                         new CameraUtils.InformationDialog("Minimum angle of deviation:" + minAngle + "measured refractive index" + 2 * Math.sin(minAngle * 0.0174533))
                                 .show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
+                        if (c2bFragment.btSocket!=null)
+                        {
+                            try
+                            {
+                                c2bFragment.btSocket.getOutputStream().write("7".toString().getBytes());
+
+                            }
+                            catch (IOException e)
+                            {
+                                c2bFragment.msg("Error");
+                            }
+                        }
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            c2bFragment.msg("Error");
+                        }
+                        if (c2bFragment.btSocket!=null)
+                        {
+                            try
+                            {
+                                c2bFragment.btSocket.getOutputStream().write("8".toString().getBytes());
+
+                            }
+                            catch (IOException e)
+                            {
+                                c2bFragment.msg("Error");
+                            }
+
+                        }
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            c2bFragment.msg("Error");
+                        }
+                        if (c2bFragment.btSocket!=null)
+                        {
+                            try
+                            {
+                                c2bFragment.btSocket.getOutputStream().write("9".toString().getBytes());
+
+                            }
+                            catch (IOException e)
+                            {
+                                c2bFragment.msg("Error");
+                            }
+                        }
+//                        try {
+//                            Thread.sleep(2000);
+//                        } catch (InterruptedException e) {
+//                            c2bFragment.msg("Error");
+//                        }
+                        //gerekli olursa açarsın
+                        c2bFragment.msg("Turned Off");
                         minAngle = 0;
                     }
                     break;
@@ -809,17 +916,58 @@ public class CameraUtils {
 //        ser.write(bytes('3', 'utf-8'))
 //        time.sleep(1)
 //        print("Motor turned to starting position")
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            c2bFragment.msg("Error");
+//        }
+        //gerekirse burayı açarsın
         if (c2bFragment.btSocket!=null)
         {
             try
             {
                 c2bFragment.btSocket.getOutputStream().write("1".toString().getBytes());
+                c2bFragment.msg("reset HIGH");
             }
             catch (IOException e)
             {
                 c2bFragment.msg("Error");
             }
         }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            c2bFragment.msg("Error");
+        }
+        try
+        {
+            c2bFragment.btSocket.getOutputStream().write("2".toString().getBytes());
+            c2bFragment.msg("sleep HIGH");
+        }
+
+        catch (IOException e)
+        {
+            c2bFragment.msg("Error");
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            c2bFragment.msg("Error");
+        }
+        if (c2bFragment.btSocket!=null)
+        {
+            try
+            {
+                c2bFragment.btSocket.getOutputStream().write("3".toString().getBytes());
+                c2bFragment.msg("Motor turned to starting position");
+                motorAngle=31.5;
+            }
+            catch (IOException e)
+            {
+                c2bFragment.msg("Error");
+            }
+        }
+
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
         orientationAngle = getOrientation(rotation);
         lockFocus();
@@ -1173,6 +1321,8 @@ public class CameraUtils {
 
                 //---------------------------------------
                 //
+
+
                 try {
                     if(divide != 0) {
                         double centerRedHeight = pixelsmHeightSum / divide;
@@ -1183,6 +1333,7 @@ public class CameraUtils {
                         totalDeviation += deviationFromCenter;
                         divideDev++;
 
+
                         //showToastStatic("Red Dot Deviation from Horizontal Center:" + deviationFromCenter + "pixel" + "   (Total Width" + mImageWidth + " pixel)", activity);
                     } else {
                         showToastStatic("No red light found", activity);
@@ -1191,6 +1342,7 @@ public class CameraUtils {
                     showToastStatic("No red light found", activity);
                 } finally {
                     if (takenPictureOnOneAngle >= 29) {
+                        photoMutex= true;
 
                         if(divideDev != 0) {
                             totalDeviation /= divideDev;

@@ -24,6 +24,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -94,10 +95,13 @@ public class Camera2BasicFragment extends Fragment
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.picture: {
-                for (int i = 0; i < 1; i++) {
-                    cmUtils[i].takePicture();
+                if (CameraUtils.photoTaken==false) {
+                    for (int i = 0; i < 1; i++) {
+                        cmUtils[i].takePicture();
+                        CameraUtils.photoTaken = true;
+                    }
                 }
-                break;
+                    break;
             }
             case R.id.info: {
                 Activity activity = getActivity();
