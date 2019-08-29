@@ -77,8 +77,6 @@ public class CameraUtils {
 
     private double minDeviationOfAllAngles = 0;
 
-    static boolean photoMutex = false;
-
     private static int orientationAngle = 0;
 
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
@@ -306,7 +304,7 @@ public class CameraUtils {
 
 
                     // If it is in angle period
-                    if(takenPictureOnOneAngle == 0 && motorAngle >= 31.5 && motorAngle < 50 && photoMutex == true) {
+                    if(takenPictureOnOneAngle == 0 && motorAngle >= 31.5 && motorAngle < 50) {
                         //---------- Açı değişecek burda
                         try {
                             Thread.sleep(1000);
@@ -1342,8 +1340,7 @@ public class CameraUtils {
                     showToastStatic("No red light found", activity);
                 } finally {
                     if (takenPictureOnOneAngle >= 29) {
-                        photoMutex= true;
-
+                        
                         if(divideDev != 0) {
                             totalDeviation /= divideDev;
                             totalDeviation = Math.round(totalDeviation * 100) / 100.0;
