@@ -65,6 +65,12 @@ public class CameraUtils {
         this.c2bFragment = c2bFragment;
     }
 
+    private static int takenPictureOnOneAngle = 0;
+    private static double totalDeviation = 0.0;
+    private static int divideDev = 0;
+    private static double motorAngle = 31.5;
+    private static double minDeviation = 5000.0;
+
     private Activity activity;
 
     private Camera2BasicFragment c2bFragment;
@@ -87,6 +93,11 @@ public class CameraUtils {
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
 
+
+
+    static double minAngle = 0.0;
+
+    static boolean photoTaken = false;
     /**
      * Tag for the {@link Log}.
      */
@@ -155,6 +166,8 @@ public class CameraUtils {
      * ID of the current {@link CameraDevice}.
      */
     private String mCameraId;
+
+
 
     /**
      * An {@link AutoFitTextureView} for camera preview.
@@ -238,8 +251,8 @@ public class CameraUtils {
 
         @Override
         public void onImageAvailable(ImageReader reader) {
-//            mBackgroundHandler.post(new CameraUtils.ImageSaver(reader.acquireNextImage(), mFile, c2bFragment));
-            mBackgroundHandler.post(new CameraUtils.ImageSaver(reader.acquireNextImage(), c2bFragment, activity));
+//            mBackgroundHandler.post(new CameraUtils.ImageProcessor(reader.acquireNextImage(), mFile, c2bFragment));
+            mBackgroundHandler.post(new CameraUtils.ImageProcessor(reader.acquireNextImage(), c2bFragment, activity));
         }
 
     };
@@ -283,16 +296,179 @@ public class CameraUtils {
             switch (mState) {
                 case STATE_PREVIEW: {
                     // We have nothing to do when the camera preview is working normally.
-                    if (c2bFragment.globali % 2 == 0 && c2bFragment.globali != 0 && c2bFragment.globali < 30) {
-                        Log.d("HEYOO", "GİRDİM Kİ");
+
+                    // IF it is in 30 shot period
+                    if (takenPictureOnOneAngle % 2 == 0 && takenPictureOnOneAngle != 0 && takenPictureOnOneAngle < 30) {
                         mState = STATE_WAITING_PRECAPTURE;
                     }
-                    // 30 burst  yaparken STATE_WAITING_PRECAPTURE stateine düşür, 30lu bitince açı değiştirip yeni 30luyu çekerken STATE_WAITING_LOCK buna düşür tekrar focus ayarlayıp öyle çeksin
+
+
+                    // If it is in angle period
+                    if(takenPictureOnOneAngle == 0 && motorAngle >= 31.5 && motorAngle < 50) {
+                        //---------- Açı değişecek burda
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            c2bFragment.msg("Error");
+                        }
+
+                        if (motorAngle<=38){
+                            if (c2bFragment.btSocket!=null)
+                        {
+                            try
+                            {
+                                c2bFragment.btSocket.getOutputStream().write("4".toString().getBytes());
+                                motorAngle=motorAngle+0.45;
+                            }
+                            catch (IOException e)
+                            {
+                                c2bFragment.msg("Error");
+                            }
+                        }
+                        }
+                        if (motorAngle>38.0&& motorAngle<=40.0){
+                            if (c2bFragment.btSocket!=null)
+                            {
+                                try
+                                {
+                                    c2bFragment.btSocket.getOutputStream().write("5".toString().getBytes());
+                                    motorAngle=motorAngle+0.225;
+                                }
+                                catch (IOException e)
+                                {
+                                    c2bFragment.msg("Error");
+                                }
+                            }
+                        }
+                        if (motorAngle>40.0&& motorAngle<=46.0){
+                            if (c2bFragment.btSocket!=null)
+                            {
+                                try
+                                {
+                                    c2bFragment.btSocket.getOutputStream().write("6".toString().getBytes());
+                                    motorAngle=motorAngle+0.1225;
+                                }
+                                catch (IOException e)
+                                {
+                                    c2bFragment.msg("Error");
+                                }
+                            }
+                        }
+                        if (motorAngle>46.0){
+                            if (c2bFragment.btSocket!=null)
+                            {
+                                try
+                                {
+                                    c2bFragment.btSocket.getOutputStream().write("4".toString().getBytes());
+                                    motorAngle=motorAngle+0.45;
+                                }
+                                catch (IOException e)
+                                {
+                                    c2bFragment.msg("Error");
+                                }
+                            }
+                        }
+
+
+                        //TODO: Ara işlem kısmı
+                        //                    if ang<=38.0:
+                        //                    ser.write(bytes('4', 'utf-8'))
+                        //                    ang=ang+0.45
+                        //                    elif ang>38.0 and ang<=40.0:
+                        //                    ser.write(bytes('5', 'utf-8'))
+                        //                    ang=ang+0.225
+                        //                    elif ang>40.0 and ang<=46.0:
+                        //                    ser.write(bytes('6', 'utf-8'))
+                        //                    ang=ang+0.1125
+                        //                    elif ang>46.0:
+                        //                    ser.write(bytes('4', 'utf-8'))
+                        //                    ang=ang+0.45
+                        //                    time.sleep(1)
+                        //TODO: DELAY Bu Şekilde Ekleniyor 3000 ms= 3 sn
+
+
+                        //----------------
+                        mState = STATE_WAITING_PRECAPTURE;
+                        // 30 burst  yaparken STATE_WAITING_PRECAPTURE stateine düşür, 30lu bitince açı değiştirip yeni 30luyu çekerken STATE_WAITING_LOCK buna düşür tekrar focus ayarlayıp öyle çeksin
+                    } else if(motorAngle >= 50) {
+                        //TODO: Bitiş kısmı
+//                        ser.write(bytes('7', 'utf-8'))
+//                        time.sleep(3)
+//                        print("Turned to zero position")
+//                        ser.write(bytes('8', 'utf-8'))
+//                        time.sleep(2)
+//                        ser.write(bytes('9', 'utf-8'))
+//                        time.sleep(2)
+//                        print("turned off")
+                        //TODO:
+                        motorAngle = 31.5;
+                        photoTaken = false;
+
+                        //print("minimum angle of deviation",minang)
+                        //print("measured refractive index",2 * math.sin(minang * 0.0174533))
+                        new CameraUtils.InformationDialog("Minimum angle of deviation:" + minAngle + "measured refractive index" + 2 * Math.sin(minAngle * 0.0174533))
+                                .show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
+                        if (c2bFragment.btSocket!=null)
+                        {
+                            try
+                            {
+                                c2bFragment.btSocket.getOutputStream().write("7".toString().getBytes());
+
+                            }
+                            catch (IOException e)
+                            {
+                                c2bFragment.msg("Error");
+                            }
+                        }
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            c2bFragment.msg("Error");
+                        }
+                        if (c2bFragment.btSocket!=null)
+                        {
+                            try
+                            {
+                                c2bFragment.btSocket.getOutputStream().write("8".toString().getBytes());
+
+                            }
+                            catch (IOException e)
+                            {
+                                c2bFragment.msg("Error");
+                            }
+
+                        }
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            c2bFragment.msg("Error");
+                        }
+                        if (c2bFragment.btSocket!=null)
+                        {
+                            try
+                            {
+                                c2bFragment.btSocket.getOutputStream().write("9".toString().getBytes());
+
+                            }
+                            catch (IOException e)
+                            {
+                                c2bFragment.msg("Error");
+                            }
+                        }
+//                        try {
+//                            Thread.sleep(2000);
+//                        } catch (InterruptedException e) {
+//                            c2bFragment.msg("Error");
+//                        }
+                        //gerekli olursa açarsın
+                        c2bFragment.msg("Turned Off");
+                        minAngle = 0;
+                    }
                     break;
                 }
                 case STATE_WAITING_LOCK: {
                     Integer afState = result.get(CaptureResult.CONTROL_AF_STATE);
-                    showToast("" + afState);
+                    // For debug afstate showToast("" + afState);
                     if (afState == null) {
                         captureStillPicture();
                     } else if (CaptureResult.CONTROL_AF_STATE_FOCUSED_LOCKED == afState ||
@@ -661,7 +837,7 @@ public class CameraUtils {
                                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
                                 // Flash is automatically enabled when necessary.
                                 //setAutoFlash(mPreviewRequestBuilder);
-                                mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
+
 
                                 // Finally, we start displaying the camera preview.
                                 mPreviewRequest = mPreviewRequestBuilder.build();
@@ -726,6 +902,70 @@ public class CameraUtils {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+        //@TODO: Bütün ölçümler başlamadan önce (AÇILIŞ)
+//        time.sleep(3) Bu optional, konması gerekiyo mu bilinmiyor
+
+//        ser.write(bytes('1', 'utf-8'))
+//        print("reset HIGH")
+//        time.sleep(1)
+//        ser.write(bytes('2', 'utf-8'))
+//        print("sleep HIGH")
+//        time.sleep(1)
+//        ser.write(bytes('3', 'utf-8'))
+//        time.sleep(1)
+//        print("Motor turned to starting position")
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            c2bFragment.msg("Error");
+//        }
+        //gerekirse burayı açarsın
+        if (c2bFragment.btSocket!=null)
+        {
+            try
+            {
+                c2bFragment.btSocket.getOutputStream().write("1".toString().getBytes());
+                c2bFragment.msg("reset HIGH");
+            }
+            catch (IOException e)
+            {
+                c2bFragment.msg("Error");
+            }
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            c2bFragment.msg("Error");
+        }
+        try
+        {
+            c2bFragment.btSocket.getOutputStream().write("2".toString().getBytes());
+            c2bFragment.msg("sleep HIGH");
+        }
+
+        catch (IOException e)
+        {
+            c2bFragment.msg("Error");
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            c2bFragment.msg("Error");
+        }
+        if (c2bFragment.btSocket!=null)
+        {
+            try
+            {
+                c2bFragment.btSocket.getOutputStream().write("3".toString().getBytes());
+                c2bFragment.msg("Motor turned to starting position");
+                motorAngle=31.5;
+            }
+            catch (IOException e)
+            {
+                c2bFragment.msg("Error");
+            }
+        }
+
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
         orientationAngle = getOrientation(rotation);
         lockFocus();
@@ -785,7 +1025,7 @@ public class CameraUtils {
             captureBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                     CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
             //setAutoFlash(captureBuilder);
-            captureBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
+
 
             // Orientation
 //            int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
@@ -842,7 +1082,7 @@ public class CameraUtils {
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
                     CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
             //setAutoFlash(mPreviewRequestBuilder);
-            mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AE_MODE, CaptureRequest.FLASH_MODE_OFF);
+
             mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
                     mBackgroundHandler);
             // After this, the camera will go back to the normal state of preview.
@@ -865,7 +1105,7 @@ public class CameraUtils {
     /**
      * Saves a JPEG {@link Image} into the specified {@link File}.
      */
-    private static class ImageSaver implements Runnable {
+    private static class ImageProcessor implements Runnable {
 
         /**
          * The JPEG image
@@ -880,10 +1120,7 @@ public class CameraUtils {
 
         private Camera2BasicFragment c2bFragment;
 
-        double totalDeviation = 0;
-        int divideDev = 0;
-
-        ImageSaver(Image image, Camera2BasicFragment c2bFragment, Activity activity) {
+        ImageProcessor(Image image, Camera2BasicFragment c2bFragment, Activity activity) {
             mImage = image;
 //            mFile = file;
             this.c2bFragment = c2bFragment;
@@ -998,55 +1235,14 @@ public class CameraUtils {
 
         @Override
         public void run() {
-//showToastStatic("lölölölö", activity);
-//            byte[] bytes = new byte[buffer.remaining()];
-//            buffer.get(bytes);
-//            FileOutputStream output = null;
-//            try {
-//                output = new FileOutputStream(mFile);
-//                output.write(bytes);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } finally {
-//                mImage.close();
-//                if (null != output) {
-//                    try {
-//                        output.close();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                if(c2bFragment.globali < 20) {
-//                    c2bFragment.onClick(c2bFragment.getView());
-//                    ++c2bFragment.globali;
-//                }
-//                else
-//                    c2bFragment.globali = 0;
-//            }
-
-//            if(c2bFragment.globali < 19) {
-////                imageList.add(mImage);
-//                ++c2bFragment.globali;
-//                Log.d(TAG, "çekiyor");
-//                c2bFragment.onClick(c2bFragment.getView());
-//            }
-//            else {
-//                c2bFragment.globali = 0;
-//                Log.d(TAG, "ahanda yirmili bitti");
-//                //hesaplama kodları buraya gelcek 20 foto olunca
-////                imageList = new ArrayList<>();
-//            }
-
-
-//mimage'ı imagelListe atma kodunu tekrar etkinleştirin
             try {
+                // Mutex for lock. This lock mechanism is recommended to avoid collusions (Thread Safety)
                 mutex.acquire();
 
-//                if (c2bFragment.globali++ >= 29) {
-//                    showToastStatic("artık endişeli değilim 30 foto çektik :P:D", activity);
-//                }
-
-                //TODO: direk rgb formatında çekebiliyo musun ona bak, burdaki yuv dönüşümleri de zaman alıyo ve green kaydetme sorunu var dönüşüm sonrası
+                //---------------------------------------
+                // 1) Transform YUV to RGB Pixels one Dimensional Array:
+                //      Taken mImage is in YUV Format
+                //      We need to transform RGB format
                 Image.Plane Y = mImage.getPlanes()[0];
                 Image.Plane U = mImage.getPlanes()[1];
                 Image.Plane V = mImage.getPlanes()[2];
@@ -1063,11 +1259,17 @@ public class CameraUtils {
                 V.getBuffer().get(data, Yb + Ub, Vb);
                 int mImageWidth = mImage.getWidth();
                 int mImageHeight = mImage.getHeight();
-                double pixelsmHeightSum = 0;
-                double pixelsmWidthSum = 0;
+                double pixelsmHeightSum = 0.0;
+                double pixelsmWidthSum = 0.0;
                 int divide = 0;
-                int[] pixels = convertYUV420_NV21toRGB8888(data, mImageWidth, mImageHeight);
 
+                int[] pixels = convertYUV420_NV21toRGB8888(data, mImageWidth, mImageHeight);
+                //---------------------------------------
+
+
+                //---------------------------------------
+                // 2) Transform to 2D Array:
+                //      Our pixels RGB array is one dimensional. Transform this to 2 dimensional
                 int[][] array2D = new int[mImageHeight][mImageWidth];
                 for (int y = 0; y < mImageHeight; y++) {
                     for (int x = 0; x < mImageWidth; x++) {
@@ -1075,31 +1277,11 @@ public class CameraUtils {
                         array2D[y][x] = pixels[pixelsPlace];
                     }
                 }
-
-//                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-//
-//                int temp = 0;
-//                switch (getOrientation(rotation) ) {
-//                    case 180:
-//                        temp = mImageWidth;
-//                        mImageWidth = mImageHeight;
-//                        mImageHeight = temp;
-//                        array2D = rotateMatrix90Clockwise(array2D);
-//                    case 90:
-//                        temp = mImageWidth;
-//                        mImageWidth = mImageHeight;
-//                        mImageHeight = temp;
-//                        array2D = rotateMatrix90Clockwise(array2D);
-//                        break;
-//                    case 270:
-//                        temp = mImageWidth;
-//                        mImageWidth = mImageHeight;
-//                        mImageHeight = temp;
-//                        array2D = rotateMatrix90CounterClockwise(array2D);
-//                        break;
-//                };
+                //---------------------------------------
 
 
+                //---------------------------------------
+                // 3) Detect RED pixels:
                 for (int y = 0; y < mImageHeight; ++y) {
                     for (int x = 0; x < mImageWidth; ++x) {
                         int colorDetect = array2D[y][x];
@@ -1112,10 +1294,16 @@ public class CameraUtils {
                         }
                     }
                 }
+                //---------------------------------------
 
+                // This line for image saving into storage (For Debug Exceptions and Unexpected Situations)
                 //Bitmap bitmap = Bitmap.createBitmap(pixels, mImageWidth, mImageHeight, Bitmap.Config.ARGB_8888);
 
-                // For orientation is 90 or 270, switch width-height calculations
+                //---------------------------------------
+                // 4) Fake Rotate If Its Needed:
+                //      If the phone is in Landscape mode (not Portrait mode) we need to rotate (For orientation is 90 or 270)
+                //      But we DID NOT ROTATE THE ORIGINAL
+                //      Just switch width-height calculations results (All we Need)
                 double temp1 = 0;
                 int temp2 = 0;
                 if (orientationAngle == 90 || orientationAngle == 270) {
@@ -1127,80 +1315,53 @@ public class CameraUtils {
                     mImageWidth = mImageHeight;
                     pixelsmHeightSum = temp2;
                 }
+                //---------------------------------------
 
-//                for (int y = 0; y < mImageHeight; y++) {
-//                    for (int x = 0; x < mImageWidth; x++) {
-//                        int pixelsPlace = x + y * mImageWidth;
-//                        pixels[pixelsPlace] = array2D[y][x];
-//                    }
-//                }
-//
+                //---------------------------------------
+                //
 
-//
-//
-//                int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
-//                Bitmap orientatedBitmap = rotate(bitmap, getOrientation(rotation));
 
-                //int colorCodeAtRightBottomPixel = bitmap.getPixel((mImageWidth - 4), (mImageHeight - 4));
-
-//                int orientatedBMWidth = orientatedBitmap.getWidth();
-//                int orientatedBMHeight = orientatedBitmap.getHeight();
-
-//                for (int i = 0; i <= orientatedBMHeight - 1; ++i) {
-//                    for (int a = 0; a <= orientatedBMWidth - 1; ++a) {
-//                        int colorDetect = orientatedBitmap.getPixel(a, i);
-//                        if (Color.red(colorDetect) > 236 ){
-//
-//                            pixelsmHeightSum += i;
-//                            pixelsmWidthSum += a;
-//                            divide++;
-//
-//                        }
-//                    }
-////             }
-//                double centerRedHeight = 0;
-//                double centerRedWidth = 0;
                 try {
-//                    centerRedHeight = pixelsmHeightSum / divide;
-//                    centerRedWidth = pixelsmWidthSum / divide;
-//
-//                    double deviationFromCenter = abs(centerRedWidth - ((orientatedBMWidth - 1) / 2));
-//
-//                    double totalDeviation = 0;
-//                    totalDeviation += deviationFromCenter;
-//                    int divideDev = 0;
-//                    divideDev++;
+                    if(divide != 0) {
+                        double centerRedHeight = pixelsmHeightSum / divide;
+                        double centerRedWidth = pixelsmWidthSum / divide;
+                        double deviationFromCenter = abs(centerRedWidth - (mImageWidth - 1) / 2.0 );
+
+                        deviationFromCenter = Math.round(deviationFromCenter * 100) / 100.0;
+                        totalDeviation += deviationFromCenter;
+                        divideDev++;
 
 
-                    //showToastStatic("Kırmızı noktaların merkezi:" + centerRedHeight + "," + centerRedWidth + "Merkezden sapma:" + deviationFromCenter, activity);
-
-
-                    double centerRedHeight = pixelsmHeightSum / divide;
-                    double centerRedWidth = pixelsmWidthSum / divide;
-                    double deviationFromCenter = abs(centerRedWidth - (mImageWidth - 1) / 2.0 );
-
-                    totalDeviation += deviationFromCenter;
-                    divideDev++;
-
-                    showToastStatic("Kırmızı noktaların merkezi:" + centerRedHeight + "," + centerRedWidth + "Merkezden sapma:" + deviationFromCenter, activity);
-
-                    //showToastStatic("yeni versiyon -10 pixels dizisi length: " + pixels.length + "foto en boy: y" + mImageHeight + "x" + mImageWidth + " En sağ alt köşe pixelin rgb değeri r:"
-                    //+ Color.red(colorCodeAtRightBottomPixel) + " g:" + Color.green(colorCodeAtRightBottomPixel)+ " b:"+ Color.blue(colorCodeAtRightBottomPixel), activity);
-
+                        //showToastStatic("Red Dot Deviation from Horizontal Center:" + deviationFromCenter + "pixel" + "   (Total Width" + mImageWidth + " pixel)", activity);
+                    } else {
+                        showToastStatic("No red light found", activity);
+                    }
                 } catch (Exception e) {
                     showToastStatic("No red light found", activity);
                 } finally {
-                    if (c2bFragment.globali >= 29 && divideDev != 0) {
+                    if (takenPictureOnOneAngle >= 29) {
+                        
+                        if(divideDev != 0) {
+                            totalDeviation /= divideDev;
+                            totalDeviation = Math.round(totalDeviation * 100) / 100.0;
+                            //@TODO: bu show log olcak ve bu açının değeri yazcak, bu açıdaki sapma yazcak ve o ana kadarki tüm açıların en az deviationlısının değerini de yaz
+                            showToastStatic("Red Dot Deviation from Horizontal Center:" + totalDeviation + "pixel" + "   (Total Width" + mImageWidth + " pixel) Angle:" + motorAngle, activity);
 
-                        totalDeviation /= divideDev;
-                        //@TODO: bu show log olcak ve bu açının değeri yazcak, bu açıdaki sapma yazcak ve o ana kadarki tüm açıların en az deviationlısının değerini de yaz
-                        new CameraUtils.InformationDialog("Merkezden Ortalama Sapma:" + totalDeviation).show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
-                        //showToastStatic("Merkezden Ortalama Sapma:" + totalDeviation,activity);
-                        c2bFragment.globali = -1;
+                            if(totalDeviation < minDeviation){
+                                minDeviation = totalDeviation;
+                                minAngle = motorAngle;
+                            }
+                        }
+                        else {
+                            showToastStatic("No red light found", activity);
+                        }
+
+                        // Reset
+                        takenPictureOnOneAngle = -1;
                         totalDeviation = 0;
                         divideDev = 0;
                     }
-                    ++c2bFragment.globali;
+                    ++takenPictureOnOneAngle;
                     //bitmape cast ederek sonra jpeg kaydederken bi sıkıntısı var widthi 1526dan 1200e indiriyo kırpıyo
 //                    File mFile = createImageFile(activity);
 //                    try (FileOutputStream out = new FileOutputStream(mFile)) {

@@ -16,13 +16,13 @@
 -->
 
 <resources>
-    <string name="app_name">Camera2Basic</string>
+    <string name="app_name">Refractometer</string>
     <string name="intro_message">
         <![CDATA[
         
             
-            This sample demonstrates the basic use of Camera2 API. Check the source code to see how
-            you can display camera preview and take pictures.
+            Laser beam refracts as it passes through this liquid and falls to the screen on the other side of the prism with a deviation.
+            To determine angle of this deviation, we used a phone camera. This app is used to determine the amount of deviation and to rotate the stepper motor via Arduino.
             
         
         ]]>
