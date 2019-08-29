@@ -67,8 +67,20 @@ ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\App
 		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:32:9-45
 activity#com.example.android.camera2basic.DeviceList
 ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:35:9-41:20
+	android:label
+		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:36:13-45
 	android:name
 		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:35:19-45
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:37:13-40:29
+action#android.intent.action.MAIN
+ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:38:17-69
+	android:name
+		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:38:25-66
+category#android.intent.category.LAUNCHER
+ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:39:17-77
+	android:name
+		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:39:27-74
 activity#com.example.android.camera2basic.ledControl
 ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:42:9-45:20
 	android:label
@@ -77,20 +89,8 @@ ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\App
 		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:43:13-39
 activity#com.example.android.camera2basic.CameraActivity
 ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:46:9-52:20
-	android:label
-		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:47:13-45
 	android:name
 		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:46:19-49
-intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:48:13-51:29
-action#android.intent.action.MAIN
-ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:49:17-69
-	android:name
-		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:49:25-66
-category#android.intent.category.LAUNCHER
-ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:50:17-77
-	android:name
-		ADDED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml:50:27-74
 uses-sdk
 INJECTED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\Users\Honour\AndroidStudioProjects\android-Camera2Basic-master\Application\src\main\AndroidManifest.xml

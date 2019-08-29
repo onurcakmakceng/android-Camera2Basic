@@ -68,6 +68,8 @@ public class CameraUtils {
     private static int takenPictureOnOneAngle = 0;
     private static double totalDeviation = 0.0;
     private static int divideDev = 0;
+    private static double motorAngle = 31.5;
+    private static double minDeviation = 5000.0;
 
     private Activity activity;
 
@@ -91,6 +93,9 @@ public class CameraUtils {
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
 
+
+
+    static double minAngle = 0.0;
     /**
      * Tag for the {@link Log}.
      */
@@ -242,8 +247,8 @@ public class CameraUtils {
 
         @Override
         public void onImageAvailable(ImageReader reader) {
-//            mBackgroundHandler.post(new CameraUtils.ImageSaver(reader.acquireNextImage(), mFile, c2bFragment));
-            mBackgroundHandler.post(new CameraUtils.ImageSaver(reader.acquireNextImage(), c2bFragment, activity));
+//            mBackgroundHandler.post(new CameraUtils.ImageProcessor(reader.acquireNextImage(), mFile, c2bFragment));
+            mBackgroundHandler.post(new CameraUtils.ImageProcessor(reader.acquireNextImage(), c2bFragment, activity));
         }
 
     };
@@ -287,10 +292,73 @@ public class CameraUtils {
             switch (mState) {
                 case STATE_PREVIEW: {
                     // We have nothing to do when the camera preview is working normally.
+
+                    // IF it is in 30 shot period
                     if (takenPictureOnOneAngle % 2 == 0 && takenPictureOnOneAngle != 0 && takenPictureOnOneAngle < 30) {
                         mState = STATE_WAITING_PRECAPTURE;
                     }
-                    // 30 burst  yaparken STATE_WAITING_PRECAPTURE stateine düşür, 30lu bitince açı değiştirip yeni 30luyu çekerken STATE_WAITING_LOCK buna düşür tekrar focus ayarlayıp öyle çeksin
+
+
+                    // If it is in angle period
+                    if(takenPictureOnOneAngle == 0 && motorAngle > 31.5 && motorAngle <= 50) {
+                        //---------- Açı değişecek burda
+
+                        //TODO: Ara işlem kısmı
+                        //                    if ang<=38.0:
+                        //                    ser.write(bytes('4', 'utf-8'))
+                        //                    ang=ang+0.45
+                        //                    elif ang>38.0 and ang<=40.0:
+                        //                    ser.write(bytes('5', 'utf-8'))
+                        //                    ang=ang+0.225
+                        //                    elif ang>40.0 and ang<=46.0:
+                        //                    ser.write(bytes('6', 'utf-8'))
+                        //                    ang=ang+0.1125
+                        //                    elif ang>46.0:
+                        //                    ser.write(bytes('4', 'utf-8'))
+                        //                    ang=ang+0.45
+                        //                    time.sleep(1)
+                        //TODO: DELAY Bu Şekilde Ekleniyor 3000 ms= 3 sn
+                        try {
+                            Thread.sleep(1500);
+                        } catch (InterruptedException e) {
+                            c2bFragment.msg("Error");
+                        }
+                        if (c2bFragment.btSocket!=null)
+                        {
+                            try
+                            {
+                                c2bFragment.btSocket.getOutputStream().write("4".toString().getBytes());
+                            }
+                            catch (IOException e)
+                            {
+                                c2bFragment.msg("Error");
+                            }
+                        }
+                        //----------------
+                        mState = STATE_WAITING_PRECAPTURE;
+                        // 30 burst  yaparken STATE_WAITING_PRECAPTURE stateine düşür, 30lu bitince açı değiştirip yeni 30luyu çekerken STATE_WAITING_LOCK buna düşür tekrar focus ayarlayıp öyle çeksin
+                    } else if(motorAngle >= 50) {
+                        //TODO: Bitiş kısmı
+//                        print("minimum angle of deviation",minang)
+//                        print("measured refractive index",2 * math.sin(minang * 0.0174533))
+//
+//                        ser.write(bytes('7', 'utf-8'))
+//                        time.sleep(3)
+//                        print("Turned to zero position")
+//                        ser.write(bytes('8', 'utf-8'))
+//                        time.sleep(2)
+//                        ser.write(bytes('9', 'utf-8'))
+//                        time.sleep(2)
+//                        print("turned off")
+                        //TODO:
+                        motorAngle = 31.5;
+
+                        //print("minimum angle of deviation",minang)
+                        //print("measured refractive index",2 * math.sin(minang * 0.0174533))
+                        new CameraUtils.InformationDialog("Minimum angle of deviation:" + minAngle + "measured refractive index" + 2 * Math.sin(minAngle * 0.0174533))
+                                .show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
+                        minAngle = 0;
+                    }
                     break;
                 }
                 case STATE_WAITING_LOCK: {
@@ -729,6 +797,29 @@ public class CameraUtils {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+        //@TODO: Bütün ölçümler başlamadan önce (AÇILIŞ)
+//        time.sleep(3) Bu optional, konması gerekiyo mu bilinmiyor
+
+//        ser.write(bytes('1', 'utf-8'))
+//        print("reset HIGH")
+//        time.sleep(1)
+//        ser.write(bytes('2', 'utf-8'))
+//        print("sleep HIGH")
+//        time.sleep(1)
+//        ser.write(bytes('3', 'utf-8'))
+//        time.sleep(1)
+//        print("Motor turned to starting position")
+        if (c2bFragment.btSocket!=null)
+        {
+            try
+            {
+                c2bFragment.btSocket.getOutputStream().write("1".toString().getBytes());
+            }
+            catch (IOException e)
+            {
+                c2bFragment.msg("Error");
+            }
+        }
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
         orientationAngle = getOrientation(rotation);
         lockFocus();
@@ -868,7 +959,7 @@ public class CameraUtils {
     /**
      * Saves a JPEG {@link Image} into the specified {@link File}.
      */
-    private static class ImageSaver implements Runnable {
+    private static class ImageProcessor implements Runnable {
 
         /**
          * The JPEG image
@@ -883,7 +974,7 @@ public class CameraUtils {
 
         private Camera2BasicFragment c2bFragment;
 
-        ImageSaver(Image image, Camera2BasicFragment c2bFragment, Activity activity) {
+        ImageProcessor(Image image, Camera2BasicFragment c2bFragment, Activity activity) {
             mImage = image;
 //            mFile = file;
             this.c2bFragment = c2bFragment;
@@ -1092,7 +1183,7 @@ public class CameraUtils {
                         totalDeviation += deviationFromCenter;
                         divideDev++;
 
-                        showToastStatic("Red Dot Deviation from Horizontal Center:" + deviationFromCenter + "pixel" + "   (Total Width" + mImageWidth + " pixel)", activity);
+                        //showToastStatic("Red Dot Deviation from Horizontal Center:" + deviationFromCenter + "pixel" + "   (Total Width" + mImageWidth + " pixel)", activity);
                     } else {
                         showToastStatic("No red light found", activity);
                     }
@@ -1105,8 +1196,15 @@ public class CameraUtils {
                             totalDeviation /= divideDev;
                             totalDeviation = Math.round(totalDeviation * 100) / 100.0;
                             //@TODO: bu show log olcak ve bu açının değeri yazcak, bu açıdaki sapma yazcak ve o ana kadarki tüm açıların en az deviationlısının değerini de yaz
-                            new CameraUtils.InformationDialog("Red Dot Deviation from Horizontal Center:" + totalDeviation + "pixel" + "   (Total Width" + mImageWidth + " pixel)")
-                                    .show(c2bFragment.getChildFragmentManager(), FRAGMENT_DIALOG);
+                            showToastStatic("Red Dot Deviation from Horizontal Center:" + totalDeviation + "pixel" + "   (Total Width" + mImageWidth + " pixel) Angle:" + motorAngle, activity);
+
+                            if(totalDeviation < minDeviation){
+                                minDeviation = totalDeviation;
+                                minAngle = motorAngle;
+                            }
+                        }
+                        else {
+                            showToastStatic("No red light found", activity);
                         }
 
                         // Reset
